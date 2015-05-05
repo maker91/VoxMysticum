@@ -1,0 +1,11 @@
+{
+	"diffuse": "magic_ice.png",
+	"origin": "16 16",
+	"animation": [
+		{
+			"name": "idle",
+			"frametime": 0.1,
+			"frames": ["0 0 48 32", "48 0 48 32", "96 0 48 32"]
+		}
+	]
+}

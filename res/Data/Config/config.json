@@ -1,0 +1,11 @@
+{
+	// Video settings
+	"screen-width": 800,
+	"screen-height": 600,
+
+	// Game Settings
+	"character-sprite": "wizard_arcane.tmd",
+
+	// Random number generation
+	"seed": 100
+}

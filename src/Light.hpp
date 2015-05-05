@@ -1,0 +1,27 @@
+#pragma once
+
+#include "Entity.hpp"
+
+class Light : public Entity
+{
+public:
+	Light(GameState &, const sf::Vector3f &pos, const sf::Color &col = sf::Color::White, 
+		float intensity = 1.f, float radius = 100.f);
+	Light(GameState &, IBaseEntity *parent, float height, const sf::Color &col = sf::Color::White, 
+		float intensity = 1.f, float radius = 100.f);
+
+	void setHeight(float height);
+	void setIntensity(float i);
+	void setRadius(float r);
+	float getIntensity() const;
+	float getRadius() const;
+
+	void draw(sf::RenderTarget &rt, sf::RenderStates states) const;
+
+private:
+	void rescale();
+
+private:
+	float intensity;
+	float radius;
+};

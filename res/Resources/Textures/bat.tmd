@@ -1,0 +1,13 @@
+{
+	"diffuse": "bat.png",
+	"glow": "bat_glow.png",
+	"origin": "16 16",
+	"animation": [
+		{
+			"name": "idle",
+			"scale": "2 2",
+			"frametime": 0.1,
+			"frames": ["32 0 32 32", "64 0 32 32", "96 0 32 32", "64 0 32 32"]
+		}
+	]
+}
