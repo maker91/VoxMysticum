@@ -6,6 +6,8 @@
 #include "Config.hpp"
 #include "EntityFlags.hpp"
 
+#include <cmath>
+
 Player::Player(GameState &gm, const sf::Vector2f &pos, float acceleration, 
 	float maxSpeed, float friction, float shootDelay)
 : acceleration(acceleration), maxSpeed(maxSpeed), friction(friction), shootDelay(shootDelay), 

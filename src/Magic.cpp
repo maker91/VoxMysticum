@@ -5,6 +5,8 @@
 #include "GameState.hpp"
 #include "EntityFlags.hpp"
 
+#include <cmath>
+
 Magic::Magic(GameState &gm, const sf::Vector2f &pos, const sf::Vector2f &vel,
 	const sf::Vector2f &dir, float speed, float angle, float g)
 	: g(g), direction(dir), hit(false),

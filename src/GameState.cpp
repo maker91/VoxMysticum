@@ -128,7 +128,7 @@ void GameState::handleEvent(const sf::Event &ev)
 			);
 		else if (ev.key.code == KeyBindings::getBind("reload"))
 			spawnEntity("barrel", sf::Vector2f(
-			RNG::managed.generate(100.f, 700.f), RNG::managed.generate(100.f, 500.f))
+				RNG::managed.generate(100.f, 700.f), RNG::managed.generate(100.f, 500.f))
 			);
 		break;
 

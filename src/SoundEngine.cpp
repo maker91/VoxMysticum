@@ -4,6 +4,8 @@
 #include "ResourceManager.hpp"
 #include "Logging.hpp"
 
+#include <cmath>
+
 sf::Sound SoundEngine::sounds[MAX_SOUNDS];
 sf::Music SoundEngine::music;
 bool SoundEngine::fading = false;

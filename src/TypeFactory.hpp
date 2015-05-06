@@ -11,7 +11,7 @@ public:
 	template <typename Derived, typename... Args>
 	static void registerType(Key id)
 	{
-		Product<Args...>::products[id] = std::make_shared<Product<Args...>::BluePrint<Derived>>();
+		Product<Args...>::products[id] = std::make_shared<typename Product<Args...>::template BluePrint<Derived>>();
 	}
 
 	template <typename... Args>
@@ -46,4 +46,4 @@ private:
 
 template <typename Key, typename Base>
 template <typename... Args>
-std::map<Key, std::shared_ptr<typename TypeFactory<Key, Base>::Product<Args...>::IBluePrint>> TypeFactory<Key, Base>::Product<Args...>::products;
+std::map<Key, std::shared_ptr<typename TypeFactory<Key, Base>::template Product<Args...>::IBluePrint>> TypeFactory<Key, Base>::Product<Args...>::products;

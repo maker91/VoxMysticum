@@ -1,8 +1,8 @@
 CC			= g++
 CFLAGS		= -Wall -Wextra -pedantic -std=c++11 -g
 LDFLAGS		= -lsfml-graphics -lsfml-window -lsfml-audio -lsfml-system -lsfml-network
-INCPATH		= -I C:/Users/Reckless/Documents/Dev/C++/Libraries/SFML-2.0/include
-LIBPATH		= -L C:/Users/Reckless/Documents/Dev/C++/Libraries/SFML-2.0/lib
+INCPATH		= 
+LIBPATH		= 
 DEFINES		= 
 NAME 		= VoxMysticum
 INSTALLDIR 	= .
@@ -42,7 +42,6 @@ install: $(EXECUTABLE)
 	@echo "installing..."
 	@mkdir $(INSTALLPATH)
 	@cp bin/* $(INSTALLPATH)
-	@cp extlib/* $(INSTALLPATH)
 	@cp -r res/* $(INSTALLPATH)
 	@echo "done!"
 

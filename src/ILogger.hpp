@@ -17,7 +17,7 @@ namespace Logging
 			void info(const std::string &fmt, Args... args)
 			{
 				char buf[1024];
-				sprintf_s(buf, fmt.c_str(), args...);
+				sprintf(buf, fmt.c_str(), args...);
 				onInfo(buf);
 			}
 
@@ -25,7 +25,7 @@ namespace Logging
 			void debug(const std::string &fmt, Args... args)
 			{
 				char buf[1024];
-				sprintf_s(buf, fmt.c_str(), args...);
+				sprintf(buf, fmt.c_str(), args...);
 				onDebug(buf);
 			}
 
@@ -33,7 +33,7 @@ namespace Logging
 			void warning(const std::string &fmt, Args... args)
 			{
 				char buf[1024];
-				sprintf_s(buf, fmt.c_str(), args...);
+				sprintf(buf, fmt.c_str(), args...);
 				onWarning(buf);
 			}
 
@@ -41,7 +41,7 @@ namespace Logging
 			void error(const std::string &fmt, Args... args)
 			{
 				char buf[1024];
-				sprintf_s(buf, fmt.c_str(), args...);
+				sprintf(buf, fmt.c_str(), args...);
 				onError(buf);
 			}
 
@@ -49,7 +49,7 @@ namespace Logging
 			void critical(const std::string &fmt, Args... args)
 			{
 				char buf[1024];
-				sprintf_s(buf, fmt.c_str(), args...);
+				sprintf(buf, fmt.c_str(), args...);
 				onCritical(buf);
 			}
 

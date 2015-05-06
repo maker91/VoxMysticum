@@ -3,6 +3,8 @@
 #include "Texture.hpp"
 #include "EntityFlags.hpp"
 
+#include <cmath>
+
 Light::Light(GameState &gm, const sf::Vector3f &pos, const sf::Color &col, float intensity, float radius)
 : intensity(intensity),  radius(radius), 
 Entity(gm, pos, sf::Vector3f(), *ResourceManager::get<TMD>("light.tmd"))
