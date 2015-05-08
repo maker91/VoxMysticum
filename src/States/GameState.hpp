@@ -7,9 +7,9 @@
 #include "IDFactory.hpp"
 #include "IBaseState.hpp"
 
-#include "Entity.hpp"
-#include "Light.hpp"
-#include "Player.hpp"
+#include "Entities/Entity.hpp"
+#include "Entities/Light.hpp"
+#include "Entities/Player.hpp"
 
 class GameState : public IBaseState
 {

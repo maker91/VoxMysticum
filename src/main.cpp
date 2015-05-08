@@ -7,7 +7,7 @@
 #include <SFML/Network.hpp>
 
 #include "StateManager.hpp"
-#include "GameState.hpp"
+#include "States/GameState.hpp"
 #include "SoundEngine.hpp"
 #include "Config.hpp"
 

@@ -2,8 +2,8 @@
 #include "GameState.hpp"
 
 #include "ResourceManager.hpp"
-#include "Texture.hpp"
-#include "Shader.hpp"
+#include "Resources/Texture.hpp"
+#include "Resources/Shader.hpp"
 
 #include "SoundEngine.hpp"
 #include "KeyBindings.hpp"
@@ -13,12 +13,12 @@
 
 #include "EntityFlags.hpp"
 #include "TypeFactory.hpp"
-#include "IBaseEntity.hpp"
+#include "Entities/IBaseEntity.hpp"
 
-#include "Magic.hpp"
-#include "Effect.hpp"
-#include "Barrel.hpp"
-#include "Bat.hpp"
+#include "Entities/Magic.hpp"
+#include "Entities/Effect.hpp"
+#include "Entities/Barrel.hpp"
+#include "Entities/Bat.hpp"
 
 GameState::GameState()
 { 

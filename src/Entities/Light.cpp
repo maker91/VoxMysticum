@@ -1,6 +1,6 @@
 #include "Light.hpp"
 #include "ResourceManager.hpp"
-#include "Texture.hpp"
+#include "Resources/Texture.hpp"
 #include "EntityFlags.hpp"
 
 #include <cmath>

@@ -1,6 +1,6 @@
 #include "Effect.hpp"
 #include "EntityFlags.hpp"
-#include "GameState.hpp"
+#include "States/GameState.hpp"
 
 #include "Logging.hpp"
 

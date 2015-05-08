@@ -4,11 +4,11 @@
 #include <memory>
 #include <SFML/Graphics.hpp>
 
-#include "IDFactory.hpp"
-#include "TypeFactory.hpp"
+#include "../IDFactory.hpp"
+#include "../TypeFactory.hpp"
 #include "IBaseEntity.hpp"
-#include "Texture.hpp"
-#include "AnimPlayer.hpp"
+#include "../Resources/Texture.hpp"
+#include "../AnimPlayer.hpp"
 
 class IBaseEntity : virtual public sf::Transformable, public sf::Drawable
 {

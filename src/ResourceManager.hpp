@@ -4,7 +4,7 @@
 #include <memory>
 #include <string>
 
-#include "IBaseResource.hpp"
+#include "Resources/IBaseResource.hpp"
 #include "Logging.hpp"
 
 class ResourceManager

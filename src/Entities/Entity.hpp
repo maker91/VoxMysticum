@@ -3,8 +3,8 @@
 #include <SFML/Graphics.hpp>
 
 #include "IBaseEntity.hpp"
-#include "TMD.hpp"
-#include "AnimPlayer.hpp"
+#include "../Resources/TMD.hpp"
+#include "../AnimPlayer.hpp"
 
 class GameState;
 

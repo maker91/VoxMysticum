@@ -1,7 +1,7 @@
 #include "Entity.hpp"
 #include "EntityFlags.hpp"
-#include "GameState.hpp"
-#include "Shader.hpp"
+#include "States/GameState.hpp"
+#include "Resources/Shader.hpp"
 #include "ResourceManager.hpp"
 
 Entity::Entity(GameState &game, const sf::Vector3f &pos, const sf::Vector3f s, TMD &tex, 

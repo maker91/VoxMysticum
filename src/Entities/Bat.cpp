@@ -1,8 +1,8 @@
 #include "Bat.hpp"
 #include "ResourceManager.hpp"
-#include "TMD.hpp"
+#include "Resources/TMD.hpp"
 #include "EntityFlags.hpp"
-#include "GameState.hpp"
+#include "States/GameState.hpp"
 #include "RNG.hpp"
 
 Bat::Bat(GameState &gm, const sf::Vector2f &pos)

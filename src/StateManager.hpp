@@ -5,7 +5,7 @@
 #include <stack>
 #include <memory>
 
-#include "IBaseState.hpp"
+#include "States/IBaseState.hpp"
 
 class StateManager
 {

@@ -1,7 +1,7 @@
 #pragma once
 
 #include <functional>
-#include "TMD.hpp"
+#include "Resources/TMD.hpp"
 
 class AnimPlayer
 {

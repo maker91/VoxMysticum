@@ -1,8 +1,8 @@
 #include "Magic.hpp"
 #include "ResourceManager.hpp"
-#include "TMD.hpp"
+#include "Resources/TMD.hpp"
 #include "SoundEngine.hpp"
-#include "GameState.hpp"
+#include "States/GameState.hpp"
 #include "EntityFlags.hpp"
 
 #include <cmath>

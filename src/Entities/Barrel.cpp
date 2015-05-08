@@ -1,6 +1,6 @@
 #include "Barrel.hpp"
 #include "ResourceManager.hpp"
-#include "TMD.hpp"
+#include "Resources/TMD.hpp"
 #include "EntityFlags.hpp"
 
 Barrel::Barrel(GameState &gm, const sf::Vector2f &pos)

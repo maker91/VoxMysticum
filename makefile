@@ -1,7 +1,7 @@
 CC			= g++
 CFLAGS		= -Wall -Wextra -pedantic -std=c++11 -g
 LDFLAGS		= -lsfml-graphics -lsfml-window -lsfml-audio -lsfml-system -lsfml-network
-INCPATH		= 
+INCPATH		= -I src/
 LIBPATH		= 
 DEFINES		= 
 NAME 		= VoxMysticum

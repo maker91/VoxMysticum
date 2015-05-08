@@ -3,9 +3,9 @@
 #include <map>
 #include <string>
 #include <memory>
-#include "ILogger.hpp"
+#include "Logging/ILogger.hpp"
 
-#include "StandardLogger.hpp"
+#include "Logging/StandardLogger.hpp"
 
 namespace Logging
 {

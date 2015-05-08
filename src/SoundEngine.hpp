@@ -1,7 +1,7 @@
 #pragma once
 
 #include <SFML/Audio.hpp>
-#include "SoundBuffer.hpp"
+#include "Resources/SoundBuffer.hpp"
 
 #define MAX_SOUNDS 250
 
