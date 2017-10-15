@@ -15,7 +15,7 @@ Entity(gm, sf::Vector3f(pos.x, pos.y, 0.f), sf::Vector3f(48.f, 16.f, 54.f),
  *ResourceManager::get<TMD>(Config::config.get("character-sprite", "wizard_arcane.tmd").asString()), 2)
 {
 	setFlags(EntityFlags::GLOW | EntityFlags::COLLIDE);
-	game.spawnLight(this, 0.f, sf::Color(105, 105, 70), 0.8f, 200.f);
+	game.spawnLight(this, 0.f, sf::Color(155, 155, 120), 0.8f, 300.f);
 }
 
 void Player::tick(float dt)
@@ -24,13 +24,13 @@ void Player::tick(float dt)
 
 	// movement
 	sf::Vector2f acc;
-	if (KeyBindings::isBindPressed("move_up"))
+	if (KeyBindings::isBindPressed("player", "move_up"))
 		acc.y -= 1.f;
-	if (KeyBindings::isBindPressed("move_left"))
+	if (KeyBindings::isBindPressed("player", "move_left"))
 		acc.x -= 1.f;
-	if (KeyBindings::isBindPressed("move_down"))
+	if (KeyBindings::isBindPressed("player", "move_down"))
 		acc.y += 1.f;
-	if (KeyBindings::isBindPressed("move_right"))
+	if (KeyBindings::isBindPressed("player", "move_right"))
 		acc.x += 1.f;
 
 	float norm = acc.x*acc.x + acc.y*acc.y;
@@ -58,13 +58,13 @@ void Player::tick(float dt)
 		nextShoot -= dt;
 
 	sf::Vector2f shootDir;
-	if (KeyBindings::isBindPressed("shoot_up"))
+	if (KeyBindings::isBindPressed("player", "shoot_up"))
 		shootDir = sf::Vector2f(0.f, -1.f);
-	else if (KeyBindings::isBindPressed("shoot_right"))
+	else if (KeyBindings::isBindPressed("player", "shoot_right"))
 		shootDir = sf::Vector2f(1.f, 0.f);
-	else if (KeyBindings::isBindPressed("shoot_down"))
+	else if (KeyBindings::isBindPressed("player", "shoot_down"))
 		shootDir = sf::Vector2f(0.f, 1.f);
-	else if (KeyBindings::isBindPressed("shoot_left"))
+	else if (KeyBindings::isBindPressed("player", "shoot_left"))
 		shootDir = sf::Vector2f(-1.f, 0.f);
 
 	if (shootDir.x*shootDir.x + shootDir.y*shootDir.y > 0.f)
@@ -126,8 +126,8 @@ void Player::shoot(const sf::Vector2f &vel, const sf::Vector2f &dir)
 {
 	if (nextShoot <= 0.0f)
 	{
-		//game.spawnEntity("magic", getPosition() + 48.f*dir, 0.7f*vel, dir, 500.f, 38.f, 600.f);
-		game.spawnEntity("magic", getPosition(), 0.7f*vel, dir, 400.f, 3.5f, 100.f);
+		game.spawnEntity("magic", getPosition() + 48.f*dir, 0.7f*vel, dir, 500.f, 38.f, 600.f);
+		//game.spawnEntity("magic", getPosition(), 0.7f*vel, dir, 400.f, 3.5f, 100.f);
 		nextShoot = shootDelay;
 	}
 }

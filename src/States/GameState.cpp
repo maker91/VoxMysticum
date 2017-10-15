@@ -36,23 +36,23 @@ GameState::GameState()
 	registerEntity<Light, IBaseEntity *, float, sf::Color, float, float>("light");
 	
 	// key bindings (move to config)
-	KeyBindings::bind("move_up", sf::Keyboard::W);
-	KeyBindings::bind("move_right", sf::Keyboard::D);
-	KeyBindings::bind("move_down", sf::Keyboard::S);
-	KeyBindings::bind("move_left", sf::Keyboard::A);
-	KeyBindings::bind("shoot_up", sf::Keyboard::Up);
-	KeyBindings::bind("shoot_right", sf::Keyboard::Right);
-	KeyBindings::bind("shoot_down", sf::Keyboard::Down);
-	KeyBindings::bind("shoot_left", sf::Keyboard::Left);
-	KeyBindings::bind("activate", sf::Keyboard::Space);
-	KeyBindings::bind("reload", sf::Keyboard::R);
+	KeyBindings::bind("player", "move_up", sf::Keyboard::W);
+	KeyBindings::bind("player", "move_right", sf::Keyboard::D);
+	KeyBindings::bind("player", "move_down", sf::Keyboard::S);
+	KeyBindings::bind("player", "move_left", sf::Keyboard::A);
+	KeyBindings::bind("player", "shoot_up", sf::Keyboard::Up);
+	KeyBindings::bind("player", "shoot_right", sf::Keyboard::Right);
+	KeyBindings::bind("player", "shoot_down", sf::Keyboard::Down);
+	KeyBindings::bind("player", "shoot_left", sf::Keyboard::Left);
+	KeyBindings::bind("player", "activate", sf::Keyboard::Space);
+	KeyBindings::bind("player", "reload", sf::Keyboard::R);
 
 	// spawn player
 	player = std::static_pointer_cast<Player>(spawnEntity<sf::Vector2f>("localplayer", { 100.f, 100.f }));
 
 	// create the lightmap
 	lightmap.create(800, 600);
-	ambient = sf::Color(35, 35, 35);
+	ambient = sf::Color(70, 70, 70);
 }
 
 void GameState::tick(float dt)
@@ -122,14 +122,16 @@ void GameState::handleEvent(const sf::Event &ev)
 	switch (ev.type)
 	{
 	case sf::Event::KeyPressed:
-		if (ev.key.code == KeyBindings::getBind("activate"))
+		if (ev.key.code == KeyBindings::getBind("player", "activate"))
 			spawnEntity("bat", sf::Vector2f(
 				RNG::managed.generate(100.f, 700.f), RNG::managed.generate(100.f, 500.f))
 			);
-		else if (ev.key.code == KeyBindings::getBind("reload"))
+		else if (ev.key.code == KeyBindings::getBind("player", "reload"))
 			spawnEntity("barrel", sf::Vector2f(
 				RNG::managed.generate(100.f, 700.f), RNG::managed.generate(100.f, 500.f))
 			);
+		else if (ev.key.code == KeyBindings::getBind("menu"))
+			StateManager::pushState("pause");
 		break;
 
 	default:

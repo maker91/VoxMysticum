@@ -8,12 +8,12 @@ void StateManager::addState(const std::string &name, std::shared_ptr<IBaseState>
 bool StateManager::pushState(const std::string &name)
 {
 	if (!stateStack.empty())
-		stateStack.top()->onExit();
+		stateStack.back()->onExit();
 	
 	if (stateMap.count(name))
 	{
 		auto state = stateMap[name];
-		stateStack.push(state);
+		stateStack.push_back(state);
 		state->onEnter();
 		return true;
 	}
@@ -27,19 +27,19 @@ std::shared_ptr<IBaseState> StateManager::popState()
 		//EXCEPTION MATE
 		return nullptr;
 
-	auto state = stateStack.top();
+	auto state = stateStack.back();
 	state->onExit();
-	stateStack.pop();
+	stateStack.pop_back();
 
 	if (!stateStack.empty())
-		stateStack.top()->onEnter();
+		stateStack.back()->onEnter();
 
 	return state;
 }
 
 std::shared_ptr<IBaseState> StateManager::getCurrentState()
 {
-	return stateStack.top();
+	return stateStack.back();
 }
 
 std::shared_ptr<IBaseState> StateManager::getState(const std::string &name)
@@ -47,5 +47,22 @@ std::shared_ptr<IBaseState> StateManager::getState(const std::string &name)
 	return stateMap.at(name);
 }
 
+void StateManager::tick(float dt)
+{
+	getCurrentState()->tick(dt);
+}
+
+void StateManager::draw(sf::RenderTarget &rt)
+{
+	for (auto state : stateStack) {
+		state->draw(rt);
+	}
+}
+
+void StateManager::handleEvent(const sf::Event &ev)
+{
+	getCurrentState()->handleEvent(ev);
+}
+
 std::map<std::string, std::shared_ptr<IBaseState>> StateManager::stateMap;
-std::stack<std::shared_ptr<IBaseState>> StateManager::stateStack;
+std::vector<std::shared_ptr<IBaseState>> StateManager::stateStack;

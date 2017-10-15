@@ -2,7 +2,7 @@
 
 #include <map>
 #include <string>
-#include <stack>
+#include <vector>
 #include <memory>
 
 #include "States/IBaseState.hpp"
@@ -16,6 +16,10 @@ public:
 	static std::shared_ptr<IBaseState> getCurrentState();
 	static std::shared_ptr<IBaseState> getState(const std::string &);
 
+	static void tick(float dt);
+	static void draw(sf::RenderTarget &);
+	static void handleEvent(const sf::Event &);
+
 	template <typename T, typename... Args>
 	static std::shared_ptr<T> addState(const std::string &name, Args... args)
 	{
@@ -26,5 +30,5 @@ public:
 
 private:
 	static std::map<std::string, std::shared_ptr<IBaseState>> stateMap;
-	static std::stack<std::shared_ptr<IBaseState>> stateStack;
+	static std::vector<std::shared_ptr<IBaseState>> stateStack;
 };

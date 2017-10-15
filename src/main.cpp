@@ -8,6 +8,7 @@
 
 #include "StateManager.hpp"
 #include "States/GameState.hpp"
+#include "States/PauseState.hpp"
 #include "SoundEngine.hpp"
 #include "Config.hpp"
 
@@ -20,6 +21,7 @@ int main(int argc, char **argv)
 	window.setVerticalSyncEnabled(true);
 
 	StateManager::addState<GameState>("game");
+	StateManager::addState<PauseState>("pause");
 	StateManager::pushState("game");
 
 	sf::Clock deltaClock;
@@ -28,7 +30,7 @@ int main(int argc, char **argv)
 		float dt = deltaClock.restart().asSeconds();
 
 		SoundEngine::tick(dt);
-		StateManager::getCurrentState()->tick(dt);
+		StateManager::tick(dt);
 
 		sf::Event ev;
 		while (window.pollEvent(ev))
@@ -39,12 +41,12 @@ int main(int argc, char **argv)
 				window.close();
 				break;
 			default:
-				StateManager::getCurrentState()->handleEvent(ev);
+				StateManager::handleEvent(ev);
 			}
 		}
 
 		window.clear(sf::Color(205, 105, 105));
-		StateManager::getCurrentState()->draw(window);
+		StateManager::draw(window);
 		window.display();
 	}
 }
