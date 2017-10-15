@@ -1,17 +1,17 @@
-CC			= g++
+CC		= g++
 CFLAGS		= -Wall -Wextra -pedantic -std=c++11 -g
 LDFLAGS		= -lsfml-graphics -lsfml-window -lsfml-audio -lsfml-system -lsfml-network
 INCPATH		= -I src/
 LIBPATH		= 
 DEFINES		= 
-NAME 		= VoxMysticum
-INSTALLDIR 	= .
+NAME		= VoxMysticum
+INSTALLDIR	= .
 
 # --------- DON'T EDIT BELOW THIS LINE -----------
 SOURCES		= $(shell find src/ -name *.cpp)
 SRCDIRS		= $(shell find src/ -type d)
 OBJECTS		= $(SOURCES:src/%.cpp=obj/%.o)
-OBJDIRS 	= $(SRCDIRS:src/%=obj/%)
+OBJDIRS		= $(SRCDIRS:src/%=obj/%)
 DEPENDS		= $(OBJECTS:.o=.d)
 EXECUTABLE	= bin/$(NAME)
 INSTALLPATH	= $(INSTALLDIR)/$(NAME)
@@ -38,7 +38,7 @@ clean:
 	@echo "done!"
 
 .PHONY: install
-install: $(EXECUTABLE)
+install: uninstall $(EXECUTABLE)
 	@echo "installing..."
 	@mkdir $(INSTALLPATH)
 	@cp bin/* $(INSTALLPATH)

@@ -12,7 +12,7 @@ Player::Player(GameState &gm, const sf::Vector2f &pos, float acceleration,
 	float maxSpeed, float friction, float shootDelay)
 : acceleration(acceleration), maxSpeed(maxSpeed), friction(friction), shootDelay(shootDelay), 
 Entity(gm, sf::Vector3f(pos.x, pos.y, 0.f), sf::Vector3f(48.f, 16.f, 54.f),
- *ResourceManager::get<TMD>(Config::config.get("character-sprite", "wizard_arcane.tmd").asString()), 2)
+ *ResourceManager::get<TMD>(Config::config.get("character-sprite", "wizard_arcane.tmd").asString()), 2, 6)
 {
 	setFlags(EntityFlags::GLOW | EntityFlags::COLLIDE);
 	game.spawnLight(this, 0.f, sf::Color(105, 105, 70), 0.8f, 200.f);
@@ -127,7 +127,7 @@ void Player::shoot(const sf::Vector2f &vel, const sf::Vector2f &dir)
 	if (nextShoot <= 0.0f)
 	{
 		//game.spawnEntity("magic", getPosition() + 48.f*dir, 0.7f*vel, dir, 500.f, 38.f, 600.f);
-		game.spawnEntity("magic", getPosition(), 0.7f*vel, dir, 400.f, 3.5f, 100.f);
+		game.spawnEntity("magic", getPosition() + 25.f*dir, 0.7f*vel, dir, 400.f, 3.5f, 100.f);
 		nextShoot = shootDelay;
 	}
 }

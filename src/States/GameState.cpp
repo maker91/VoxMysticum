@@ -1,3 +1,5 @@
+#include <ctime>
+
 #include "StateManager.hpp"
 #include "GameState.hpp"
 
@@ -46,6 +48,7 @@ GameState::GameState()
 	KeyBindings::bind("shoot_left", sf::Keyboard::Left);
 	KeyBindings::bind("activate", sf::Keyboard::Space);
 	KeyBindings::bind("reload", sf::Keyboard::R);
+	KeyBindings::bind("bomb", sf::Keyboard::LShift);
 
 	// spawn player
 	player = std::static_pointer_cast<Player>(spawnEntity<sf::Vector2f>("localplayer", { 100.f, 100.f }));
@@ -115,6 +118,22 @@ void GameState::draw(sf::RenderTarget &rt)
 	lightmap.display();
 	rt.draw(sf::Sprite(lightmap.getTexture()), sf::BlendMultiply);
 	//rt.draw(sf::Sprite(lightmap.getTexture()));
+
+	// draw the UI on top
+	int health = player->getHealth();
+	int healthmod = health % 2;
+	sf::Sprite heart = sf::Sprite(*ResourceManager::get<Texture>("heart.png"));
+	sf::Sprite half_heart = sf::Sprite(*ResourceManager::get<Texture>("half_heart.png"));
+	heart.setScale(0.5f, 0.5f);
+	half_heart.setScale(0.5f, 0.5f);
+	for (int i=0; i<(health/2); i++) {
+		heart.setPosition(sf::Vector2f(10.f + i*34.f, 10.f));
+		rt.draw(heart);
+	}
+	if (healthmod != 0) {
+		half_heart.setPosition(sf::Vector2f(10.f + (health/2)*34.f, 10.f));
+		rt.draw(half_heart);
+	}
 }
 
 void GameState::handleEvent(const sf::Event &ev)
@@ -130,6 +149,8 @@ void GameState::handleEvent(const sf::Event &ev)
 			spawnEntity("barrel", sf::Vector2f(
 				RNG::managed.generate(100.f, 700.f), RNG::managed.generate(100.f, 500.f))
 			);
+		else if (ev.key.code == KeyBindings::getBind("bomb"))
+			player->hurt(1);
 		break;
 
 	default:
