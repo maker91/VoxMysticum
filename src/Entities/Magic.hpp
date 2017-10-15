@@ -10,7 +10,7 @@ class Magic : public Entity
 {
 public:
 	Magic(GameState &, const sf::Vector2f &pos, const sf::Vector2f &vel, const sf::Vector2f &dir, 
-		float speed = 600.f, float angle = 2.f, float g = 120.f);
+		float speed = 600.f, float angle = 2.f, int dmg = 25, float g = 120.f);
 	
 	void tick(float dt);
 
@@ -25,4 +25,5 @@ private:
 	sf::Vector2f direction;
 	float lob;
 	float g;
+	int dmg;
 };

@@ -27,7 +27,7 @@ GameState::GameState()
 	registerEntity<Player, sf::Vector2f>("localplayer");
 	registerEntity<Barrel, sf::Vector2f>("barrel");
 	registerEntity<Bat, sf::Vector2f>("bat");
-	registerEntity<Magic, sf::Vector2f, sf::Vector2f, sf::Vector2f, float, float, float>("magic");
+	registerEntity<Magic, sf::Vector2f, sf::Vector2f, sf::Vector2f, float, float, int, float>("magic");
 	registerEntity<Effect, sf::Vector2f, TMD &, std::string, bool>("effect");
 	registerEntity<Light, sf::Vector3f, sf::Color, float, float>("light");
 	registerEntity<Light, IBaseEntity *, float, sf::Color, float, float>("light");

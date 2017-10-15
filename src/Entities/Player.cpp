@@ -1,21 +1,20 @@
 #include "Player.hpp"
 #include "ResourceManager.hpp"
-#include "Resources/TMD.hpp"
 #include "States/GameState.hpp"
 #include "KeyBindings.hpp"
 #include "Config.hpp"
 #include "EntityFlags.hpp"
 
-#include <cmath>
 
 Player::Player(GameState &gm, const sf::Vector2f &pos, float acceleration, 
-	float maxSpeed, float friction, float shootDelay)
-: acceleration(acceleration), maxSpeed(maxSpeed), friction(friction), shootDelay(shootDelay), 
-Entity(gm, sf::Vector3f(pos.x, pos.y, 0.f), sf::Vector3f(48.f, 16.f, 54.f),
+	float friction)
+: acceleration(acceleration), friction(friction), pAttrs(),
+  Entity(gm, sf::Vector3f(pos.x, pos.y, 0.f), sf::Vector3f(48.f, 16.f, 54.f),
  *ResourceManager::get<TMD>(Config::config.get("character-sprite", "wizard_arcane.tmd").asString()), 2, 6)
 {
 	setFlags(EntityFlags::GLOW | EntityFlags::COLLIDE);
 	game.spawnLight(this, 0.f, sf::Color(105, 105, 70), 0.8f, 200.f);
+    setMaxHealth(pAttrs.maxHealth);
 }
 
 void Player::tick(float dt)
@@ -44,11 +43,8 @@ void Player::tick(float dt)
 	if (speed > 0.f)
 	{
 		velocity -= velocity*friction*dt;
-		if (speed > maxSpeed)
-		{
-			velocity = maxSpeed*velocity/speed;
-			speed = maxSpeed;
-		}
+		if (speed > pAttrs.maxSpeed)
+			velocity = pAttrs.maxSpeed*velocity/speed;
 	}
 
 	move(velocity*dt);
@@ -132,7 +128,8 @@ void Player::shoot(const sf::Vector2f &vel, const sf::Vector2f &dir)
 	if (nextShoot <= 0.0f)
 	{
 		//game.spawnEntity("magic", getPosition() + 48.f*dir, 0.7f*vel, dir, 500.f, 38.f, 600.f);
-		game.spawnEntity("magic", getPosition() + 25.f*dir, 0.7f*vel, dir, 400.f, 3.5f, 100.f);
-		nextShoot = shootDelay;
+		game.spawnEntity("magic", getPosition() + 25.f*dir, 0.7f*vel, dir, pAttrs.projectileSpeed, 3.5f,
+                         pAttrs.damage, 100.f);
+		nextShoot = pAttrs.shootDelay;
 	}
 }

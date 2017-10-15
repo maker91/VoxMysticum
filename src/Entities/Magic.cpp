@@ -9,8 +9,8 @@
 #include <cmath>
 
 Magic::Magic(GameState &gm, const sf::Vector2f &pos, const sf::Vector2f &vel,
-	const sf::Vector2f &dir, float speed, float angle, float g)
-	: g(g), direction(dir), hit(false),
+	const sf::Vector2f &dir, float speed, float angle, int dmg, float g)
+	: g(g), direction(dir), hit(false), dmg(dmg),
 	Entity(gm, sf::Vector3f(pos.x, pos.y, 32.f), sf::Vector3f(32.f, 24.f, 28.f),
 	*ResourceManager::get<TMD>(Config::config.get("magic-sprite", "magic_arcane.tmd").asString()), 2)
 {
@@ -21,9 +21,9 @@ Magic::Magic(GameState &gm, const sf::Vector2f &pos, const sf::Vector2f &vel,
 	light = std::static_pointer_cast<Light>(game.spawnLight(static_cast<IBaseEntity *>(this), 
 		height, sf::Color(105, 0, 105), 0.8f, 100.f));
 	setFlags(EntityFlags::GLOW | EntityFlags::COLLIDE);
-	setRotation(-180.f*std::atan2(velocity.y, -velocity.x)/M_PI);
+	setRotation(static_cast<float>(-180.f * std::atan2(velocity.y, -velocity.x) / M_PI));
 
-	SoundEngine::playSound("arcane.wav");
+	SoundEngine::playSound("arcane2.wav");
 }
 
 void Magic::tick(float dt)
@@ -43,7 +43,7 @@ void Magic::tick(float dt)
 void Magic::onCollide(Entity &other)
 {
 	destroy();
-	other.hurt(25);
+	other.hurt(dmg);
 }
 
 void Magic::destroy()
