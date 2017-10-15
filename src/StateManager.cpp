@@ -1,51 +1,78 @@
 #include "StateManager.hpp"
 
-void StateManager::addState(const std::string &name, std::shared_ptr<IBaseState> state)
+void StateManager::addState(const std::string &name, bool overlay, std::shared_ptr<IBaseState> state)
 {
-	stateMap[name] = state;
+	stateMap[name] = StateInfo{std::move(state), overlay};
+}
+
+void StateManager::removeState(const std::string &name) {
+    stateMap.erase(name);
 }
 
 bool StateManager::pushState(const std::string &name)
 {
 	if (!stateStack.empty())
-		stateStack.top()->onExit();
+		stateStack.back().state->onExit();
 	
 	if (stateMap.count(name))
 	{
-		auto state = stateMap[name];
-		stateStack.push(state);
-		state->onEnter();
+		auto info = stateMap[name];
+		stateStack.push_back(info);
+		info.state->onEnter();
 		return true;
 	}
 
 	return false;
 }
 
-std::shared_ptr<IBaseState> StateManager::popState()
+StateInfo StateManager::popState()
 {
 	if (stateStack.empty())
 		//EXCEPTION MATE
-		return nullptr;
+		return StateInfo{nullptr, false};
 
-	auto state = stateStack.top();
-	state->onExit();
-	stateStack.pop();
+	StateInfo info = stateStack.back();
+	info.state->onExit();
+	stateStack.pop_back();
 
 	if (!stateStack.empty())
-		stateStack.top()->onEnter();
+		stateStack.back().state->onEnter();
 
-	return state;
+	return info;
 }
 
-std::shared_ptr<IBaseState> StateManager::getCurrentState()
+StateInfo StateManager::getCurrentState()
 {
-	return stateStack.top();
+	return stateStack.back();
 }
 
-std::shared_ptr<IBaseState> StateManager::getState(const std::string &name)
+StateInfo StateManager::getState(const std::string &name)
 {
 	return stateMap.at(name);
 }
 
-std::map<std::string, std::shared_ptr<IBaseState>> StateManager::stateMap;
-std::stack<std::shared_ptr<IBaseState>> StateManager::stateStack;
+void StateManager::draw(sf::RenderTarget &window) {
+    std::vector<std::shared_ptr<IBaseState>> to_draw{};
+
+    for (auto iter = stateStack.rbegin(); iter != stateStack.rend(); iter++)
+    {
+        StateInfo info = *iter;
+        to_draw.push_back(info.state);
+        if (!info.overlay)
+            break;
+    }
+
+    for (auto iter = to_draw.rbegin(); iter != to_draw.rend(); iter++)
+        (*iter)->draw(window);
+}
+
+void StateManager::handleEvent(const sf::Event &ev) {
+	getCurrentState().state->handleEvent(ev);
+}
+
+void StateManager::tick(float dt) {
+    getCurrentState().state->tick(dt);
+}
+
+std::map<std::string, StateInfo> StateManager::stateMap;
+std::deque<StateInfo> StateManager::stateStack;

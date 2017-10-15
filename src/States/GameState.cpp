@@ -4,18 +4,13 @@
 #include "GameState.hpp"
 
 #include "ResourceManager.hpp"
-#include "Resources/Texture.hpp"
-#include "Resources/Shader.hpp"
 
 #include "SoundEngine.hpp"
 #include "KeyBindings.hpp"
-#include "Logging.hpp"
 #include "Config.hpp"
 #include "RNG.hpp"
 
 #include "EntityFlags.hpp"
-#include "TypeFactory.hpp"
-#include "Entities/IBaseEntity.hpp"
 
 #include "Entities/Magic.hpp"
 #include "Entities/Effect.hpp"
@@ -23,9 +18,9 @@
 #include "Entities/Bat.hpp"
 
 GameState::GameState()
-{ 
+{
 	// set the seeds
-	RNG::managed.seed(Config::config.get("seed", 100).asInt());
+	RNG::managed.seed(Config::config.get("seed", 100).asUInt64());
 	RNG::unmanaged.seed(static_cast<unsigned long>(std::time(nullptr)));
 
 	// register entities
@@ -49,19 +44,21 @@ GameState::GameState()
 	KeyBindings::bind("activate", sf::Keyboard::Space);
 	KeyBindings::bind("reload", sf::Keyboard::R);
 	KeyBindings::bind("bomb", sf::Keyboard::LShift);
+	KeyBindings::bind("pause", sf::Keyboard::Escape);
 
 	// spawn player
 	player = std::static_pointer_cast<Player>(spawnEntity<sf::Vector2f>("localplayer", { 100.f, 100.f }));
 
-	// create the lightmap
-	lightmap.create(800, 600);
-	ambient = sf::Color(35, 35, 35);
+	// create dthe lightmap
+	lightmap.create(Config::config.get("screen-width", 800).asUInt(),
+                    Config::config.get("screen-height", 600).asUInt());
+	ambient = sf::Color(55, 55, 55);
 }
 
 void GameState::tick(float dt)
 {
 	// tick the entities
-	for (auto ent : entities)
+	for (const auto &ent : entities)
 		ent->tick(dt);
 
 	// check for collision
@@ -104,13 +101,13 @@ void GameState::draw(sf::RenderTarget &rt)
 	});
 
 	// draw things in order!
-	for (auto ent : entities)
+	for (const auto &ent : entities)
 		if (ent->hasFlags(EntityFlags::BELOW))
 			ent->render(rt, lightmap);
-	for (auto ent : entities)
+	for (const auto &ent : entities)
 		if (!ent->hasFlags(EntityFlags::BELOW) && !ent->hasFlags(EntityFlags::ABOVE))
 			ent->render(rt, lightmap);
-	for (auto ent : entities)
+	for (const auto &ent : entities)
 		if (ent->hasFlags(EntityFlags::ABOVE))
 			ent->render(rt, lightmap);
 
@@ -120,12 +117,19 @@ void GameState::draw(sf::RenderTarget &rt)
 	//rt.draw(sf::Sprite(lightmap.getTexture()));
 
 	// draw the UI on top
-	int health = player->getHealth();
+	int maxhealth = player->getMaxHealth();
+    int health = player->getHealth();
 	int healthmod = health % 2;
 	sf::Sprite heart = sf::Sprite(*ResourceManager::get<Texture>("heart.png"));
 	sf::Sprite half_heart = sf::Sprite(*ResourceManager::get<Texture>("half_heart.png"));
+	sf::Sprite empty_heart = sf::Sprite(*ResourceManager::get<Texture>("empty_heart.png"));
 	heart.setScale(0.5f, 0.5f);
 	half_heart.setScale(0.5f, 0.5f);
+	empty_heart.setScale(0.5f, 0.5f);
+    for (int i=health/2; i<(maxhealth/2); i++) {
+        empty_heart.setPosition(sf::Vector2f(10.f + i*34.f, 10.f));
+        rt.draw(empty_heart);
+    }
 	for (int i=0; i<(health/2); i++) {
 		heart.setPosition(sf::Vector2f(10.f + i*34.f, 10.f));
 		rt.draw(heart);
@@ -151,6 +155,8 @@ void GameState::handleEvent(const sf::Event &ev)
 			);
 		else if (ev.key.code == KeyBindings::getBind("bomb"))
 			player->hurt(1);
+        else if (ev.key.code == KeyBindings::getBind("pause"))
+            StateManager::pushState("pause");
 		break;
 
 	default:

@@ -25,9 +25,11 @@ public:
 	sf::IntRect getAABB() const;
 	sf::IntRect getZAABB() const;
 
-	void hurt(int d);
+	bool hurt(int d);
 	void setHealth(int h);
 	int getHealth() const;
+    void setMaxHealth(int h);
+    int getMaxHealth() const;
 
 	virtual void onHurt(int d) {};
 
@@ -43,6 +45,7 @@ protected:
 	sf::Vector3f size;
 	std::uint64_t collision_mask;
 
+	int maxHealth;
 	int health;
 	float hurtFlash;
 public:

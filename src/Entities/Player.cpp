@@ -120,6 +120,11 @@ void Player::onCollide(Entity &other)
 		move(0.f, static_cast<float>(y));
 	else
 		move(static_cast<float>(x), 0.f);
+
+    if (other.hasFlags(EntityFlags::HURTFUL)) {
+        hurt(1);
+        velocity += 10.f*(getPosition() - other.getPosition());
+    }
 }
 
 void Player::shoot(const sf::Vector2f &vel, const sf::Vector2f &dir)

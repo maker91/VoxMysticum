@@ -16,5 +16,6 @@ namespace EntityFlags
 		COLLIDE		= 32,
 		// damage
 		INVUNERABLE	= 64,
+		HURTFUL 	= 128,
 	};
 }

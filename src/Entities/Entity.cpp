@@ -6,7 +6,7 @@
 Entity::Entity(GameState &game, const sf::Vector3f &pos, const sf::Vector3f s, TMD &tex, 
 	std::uint64_t m, int h)
 	: IBaseEntity(sf::Vector2f(pos.x, pos.y)), anim(tex), game(game), height(pos.z), collision_mask(m),
-	size(s), health(h), hurtFlash(0.f)
+	size(s), health(h), maxHealth(h), hurtFlash(0.f)
 {
 	setTexture(tex);
 	if (!tmd->isAnimated())
@@ -151,10 +151,10 @@ sf::IntRect Entity::getZAABB() const
 		static_cast<sf::Vector2i>(base_size) };
 }
 
-void Entity::hurt(int d)
+bool Entity::hurt(int d)
 {
-	if (hasFlags(EntityFlags::INVUNERABLE))
-		return;
+	if (hasFlags(EntityFlags::INVUNERABLE) || hurtFlash > 0.f)
+		return false;
 
 	if (tmd->isAnimated() && tmd->hasAnimation("hurt"))
 	{
@@ -170,6 +170,7 @@ void Entity::hurt(int d)
 
 	setHealth(getHealth() - d);
 	onHurt(d);
+    return true;
 }
 
 void Entity::setHealth(int h)
@@ -180,6 +181,16 @@ void Entity::setHealth(int h)
 int Entity::getHealth() const
 {
 	return health;
+}
+
+void Entity::setMaxHealth(int h)
+{
+	maxHealth = h;
+}
+
+int Entity::getMaxHealth() const
+{
+	return maxHealth;
 }
 
 // static

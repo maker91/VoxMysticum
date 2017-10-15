@@ -10,7 +10,7 @@ Bat::Bat(GameState &gm, const sf::Vector2f &pos)
 *ResourceManager::get<TMD>("bat.tmd").get(), 1),
 flap(SoundEngine::playSound("flap.wav", 50.f, 0.25f, true))
 {
-	setFlags(EntityFlags::COLLIDE | EntityFlags::GLOW);
+	setFlags(EntityFlags::COLLIDE | EntityFlags::GLOW | EntityFlags::HURTFUL);
 }
 
 Bat::~Bat()

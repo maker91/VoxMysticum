@@ -32,7 +32,8 @@ set(SOURCE_FILES
         src/ResourceManager.cpp
         src/RNG.cpp
         src/SoundEngine.cpp
-        src/StateManager.cpp)
+        src/StateManager.cpp
+        src/Resources/Font.cpp)
 
 # Add executable and resources
 add_executable(${PROJECT_NAME} ${SOURCE_FILES})
