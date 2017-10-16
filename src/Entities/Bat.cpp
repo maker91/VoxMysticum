@@ -7,20 +7,19 @@
 
 Bat::Bat(GameState &gm, const sf::Vector2f &pos)
 : Entity(gm, sf::Vector3f(pos.x, pos.y, 42.f), sf::Vector3f(48.f, 24.f, 32.f),
-*ResourceManager::get<TMD>("bat.tmd").get(), 1),
-flap(SoundEngine::playSound("flap.wav", 50.f, 0.25f, true))
+*ResourceManager::get<TMD>("bat.tmd").get(), 1), nextflap(1.0f)
 {
 	setFlags(EntityFlags::COLLIDE | EntityFlags::GLOW | EntityFlags::HURTFUL);
 }
 
 Bat::~Bat()
 {
-	flap.stop();
+	
 }
 
 void Bat::onCollide(Entity &other)
 {
-
+	
 }
 
 void Bat::onHurt(int d)
@@ -32,6 +31,13 @@ void Bat::onHurt(int d)
 
 void Bat::tick(float dt)
 {
+	nextflap -= dt;
+	if (nextflap <= 0.f)
+	{
+		nextflap = 1.0f;
+		SoundEngine::playSound("flap.wav", 50.f, 0.25f);
+	}
+
 	auto target = game.getPlayer();
 	sf::Vector2f p = target->getPosition() - getPosition();
 	float len = std::sqrt(p.x*p.x + p.y*p.y);

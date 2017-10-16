@@ -25,6 +25,10 @@ public:
 	static StateInfo getCurrentState();
 	static StateInfo getState(const std::string &);
 
+	static void tick(float dt);
+	static void draw(sf::RenderTarget &);
+	static void handleEvent(const sf::Event &);
+
 	template <typename T, typename... Args>
 	static std::shared_ptr<T> addState(const std::string &name, bool overlay, Args... args)
 	{

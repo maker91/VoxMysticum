@@ -8,6 +8,7 @@
 #include "StateManager.hpp"
 #include "States/PauseState.hpp"
 #include "States/GameState.hpp"
+#include "States/PauseState.hpp"
 #include "SoundEngine.hpp"
 #include "Config.hpp"
 

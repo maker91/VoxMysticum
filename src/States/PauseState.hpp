@@ -5,8 +5,9 @@
 class PauseState : public IBaseState
 {
 public:
+	PauseState();
 	void handleEvent(const sf::Event &);
-    void draw(sf::RenderTarget &);
+	void draw(sf::RenderTarget &);
 	void onEnter();
 	void onExit();
 };

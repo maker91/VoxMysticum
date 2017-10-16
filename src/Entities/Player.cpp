@@ -16,7 +16,7 @@ Player::Player(GameState &gm, const sf::Vector2f &pos, float acceleration,
 {
 	setFlags(EntityFlags::GLOW | EntityFlags::COLLIDE);
 	game.spawnLight(this, 0.f, sf::Color(105, 105, 70), 0.8f, 200.f);
-    setMaxHealth(pAttrs.maxHealth);
+	setMaxHealth(pAttrs.maxHealth);
 }
 
 void Player::tick(float dt)
@@ -25,13 +25,13 @@ void Player::tick(float dt)
 
 	// movement
 	sf::Vector2f acc;
-	if (KeyBindings::isBindPressed("move_up"))
+	if (KeyBindings::isBindPressed("player", "move_up"))
 		acc.y -= 1.f;
-	if (KeyBindings::isBindPressed("move_left"))
+	if (KeyBindings::isBindPressed("player", "move_left"))
 		acc.x -= 1.f;
-	if (KeyBindings::isBindPressed("move_down"))
+	if (KeyBindings::isBindPressed("player", "move_down"))
 		acc.y += 1.f;
-	if (KeyBindings::isBindPressed("move_right"))
+	if (KeyBindings::isBindPressed("player", "move_right"))
 		acc.x += 1.f;
 
 	float norm = acc.x*acc.x + acc.y*acc.y;
@@ -56,13 +56,13 @@ void Player::tick(float dt)
 		nextShoot -= dt;
 
 	sf::Vector2f shootDir;
-	if (KeyBindings::isBindPressed("shoot_up"))
+	if (KeyBindings::isBindPressed("player", "shoot_up"))
 		shootDir = sf::Vector2f(0.f, -1.f);
-	else if (KeyBindings::isBindPressed("shoot_right"))
+	else if (KeyBindings::isBindPressed("player", "shoot_right"))
 		shootDir = sf::Vector2f(1.f, 0.f);
-	else if (KeyBindings::isBindPressed("shoot_down"))
+	else if (KeyBindings::isBindPressed("player", "shoot_down"))
 		shootDir = sf::Vector2f(0.f, 1.f);
-	else if (KeyBindings::isBindPressed("shoot_left"))
+	else if (KeyBindings::isBindPressed("player", "shoot_left"))
 		shootDir = sf::Vector2f(-1.f, 0.f);
 
 	if (shootDir.x*shootDir.x + shootDir.y*shootDir.y > 0.f)

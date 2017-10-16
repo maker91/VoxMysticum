@@ -12,5 +12,5 @@ public:
 	virtual void tick(float dt);
 
 private:
-	sf::Sound &flap;
+	float nextflap;
 };
