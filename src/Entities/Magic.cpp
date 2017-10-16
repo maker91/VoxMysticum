@@ -21,7 +21,6 @@ Magic::Magic(GameState &gm, const sf::Vector2f &pos, const sf::Vector2f &vel,
 	light = std::static_pointer_cast<Light>(game.spawnLight(static_cast<IBaseEntity *>(this), 
 		height, sf::Color(105, 0, 0), 0.8f, 100.f));
 	setFlags(EntityFlags::GLOW | EntityFlags::COLLIDE);
-	setRotation(static_cast<float>(-180.f * std::atan2(velocity.y, -velocity.x) / M_PI));
 
 	SoundEngine::playSound("arcane2.wav");
 }
@@ -33,6 +32,12 @@ void Magic::tick(float dt)
 	lob -= g*dt;
 	height += lob*dt;
 	move(velocity*dt);
+    float absx;
+    if (std::abs(direction.x) > 0.f)
+        absx = direction.x/std::abs(direction.x);
+    else
+        absx = 0.f;
+    setRotation(static_cast<float>(-absx*lob/4.f - 180.f*(std::atan2(velocity.y, -velocity.x))/M_PI));
 
 	light->setHeight(height);
 	 
