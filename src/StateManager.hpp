@@ -19,7 +19,7 @@ class StateManager
 {
 public:
 	static void addState(const std::string &, bool, std::shared_ptr<IBaseState>);
-    static void removeState(const std::string &);
+	static void removeState(const std::string &);
 	static bool pushState(const std::string &);
 	static StateInfo popState();
 	static StateInfo getCurrentState();
@@ -36,10 +36,6 @@ public:
 		addState(name, overlay, state);
 		return state;
 	}
-
-	static void draw(sf::RenderTarget &);
-    static void handleEvent(const sf::Event &);
-    static void tick(float dt);
 
 private:
 	static std::map<std::string, StateInfo> stateMap;

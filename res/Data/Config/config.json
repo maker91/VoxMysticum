@@ -4,7 +4,8 @@
 	"screen-height": 600,
 
 	// Game Settings
-	"character-sprite": "wizard_arcane.tmd",
+	"character-sprite": "wizard_fire.tmd",
+	"magic-sprite": "magic_fire.tmd",
 
 	// Random number generation
 	"seed": 100

@@ -152,9 +152,9 @@ void GameState::handleEvent(const sf::Event &ev)
 			spawnEntity("barrel", sf::Vector2f(
 				RNG::managed.generate(100.f, 700.f), RNG::managed.generate(100.f, 500.f))
 			);
-		else if (ev.key.code == KeyBindings::getBind("bomb"))
+		else if (ev.key.code == KeyBindings::getBind("player", "bomb"))
 			player->hurt(1);
-	        else if (ev.key.code == KeyBindings::getBind("pause"))
+	        else if (ev.key.code == KeyBindings::getBind("menu"))
         		StateManager::pushState("pause");
 		break;
 
