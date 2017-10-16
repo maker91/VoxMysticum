@@ -1,3 +1,5 @@
+#include <cmath>
+
 #include "Player.hpp"
 #include "ResourceManager.hpp"
 #include "States/GameState.hpp"

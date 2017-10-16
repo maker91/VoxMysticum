@@ -19,7 +19,7 @@ Magic::Magic(GameState &gm, const sf::Vector2f &pos, const sf::Vector2f &vel,
 	anim.play("idle", true);
 
 	light = std::static_pointer_cast<Light>(game.spawnLight(static_cast<IBaseEntity *>(this), 
-		height, sf::Color(105, 0, 105), 0.8f, 100.f));
+		height, sf::Color(105, 0, 0), 0.8f, 100.f));
 	setFlags(EntityFlags::GLOW | EntityFlags::COLLIDE);
 	setRotation(static_cast<float>(-180.f * std::atan2(velocity.y, -velocity.x) / M_PI));
 
