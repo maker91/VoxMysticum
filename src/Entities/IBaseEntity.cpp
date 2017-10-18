@@ -15,7 +15,7 @@ IBaseEntity::IBaseEntity(const sf::Vector2f &pos, const Texture &t)
 
 bool IBaseEntity::hasFlags(std::uint64_t flag) const
 {
-	return ((flags&flag) == flag);
+	return bool(flags&flag);
 }
 
 std::uint64_t IBaseEntity::getFlags() const

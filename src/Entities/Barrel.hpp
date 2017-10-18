@@ -1,6 +1,6 @@
-#include "Entity.hpp"
+#include "Hurtable.hpp"
 
-class Barrel : public Entity
+class Barrel : public Hurtable
 {
 public:
 	Barrel(GameState &game, const sf::Vector2f &pos);

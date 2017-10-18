@@ -2,11 +2,11 @@
 
 #include <SFML/System/Vector2.hpp>
 #include "PAttributes.hpp"
-#include "Entity.hpp"
+#include "Hurtable.hpp"
 
 class GameState;
 
-class Player : public Entity
+class Player : public Hurtable
 {
 public:
     explicit Player(GameState &game, const sf::Vector2f &pos = sf::Vector2f(0.f, 0.f),
@@ -15,6 +15,8 @@ public:
 	void tick(float dt);
 	void shoot(const sf::Vector2f &vel, const sf::Vector2f &dir);
 	void onCollide(Entity &other);
+
+	bool heal(int h) override;
 
 private:
 	sf::Vector2f velocity;

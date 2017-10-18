@@ -3,10 +3,10 @@
 #include "States/GameState.hpp"
 #include "ResourceManager.hpp"
 
-Entity::Entity(GameState &game, const sf::Vector3f &pos, const sf::Vector3f s, TMD &tex, 
-	std::uint64_t m, int h)
+Entity::Entity(GameState &game, const sf::Vector3f &pos, const sf::Vector3f &s, TMD &tex,
+	std::uint64_t m)
 	: IBaseEntity(sf::Vector2f(pos.x, pos.y)), anim(tex), game(game), height(pos.z), collision_mask(m),
-	size(s), health(h), maxHealth(h), hurtFlash(0.f)
+	size(s)
 {
 	setTexture(tex);
 	if (!tmd->isAnimated())
@@ -38,9 +38,6 @@ void Entity::tick(float dt)
 		setColor(col);
 		setTextureRect(rect);
 	}
-
-	if (hurtFlash > 0.f)
-		hurtFlash -= dt;
 }
 
 void Entity::draw(sf::RenderTarget &rt, sf::RenderStates states) const
@@ -56,33 +53,26 @@ void Entity::draw(sf::RenderTarget &rt, sf::RenderStates states) const
 		rt.draw(shadow);
 	}
 
-	//// draw the base bounding box
-	//auto aabb = getAABB();
-	//sf::RectangleShape r(sf::Vector2f(aabb.width, aabb.height));
-	//r.setPosition(aabb.left, aabb.top);
-	//r.setFillColor(sf::Color::Transparent);
-	//r.setOutlineThickness(1.f);
-	//r.setOutlineColor(sf::Color::Red);
-	//rt.draw(r);
-
-	//// draw the vert bounding boc
-	//auto vaabb = getZAABB();
-	//sf::RectangleShape h(sf::Vector2f(vaabb.width, vaabb.height));
-	//h.setPosition(vaabb.left, vaabb.top);
-	//h.setFillColor(sf::Color::Transparent);
-	//h.setOutlineThickness(1.f);
-	//h.setOutlineColor(sf::Color::Green);
-	//rt.draw(h);
-
-	if (hurtFlash > 0.f)
-	{
-		auto sh = ResourceManager::get<Shader>("color_override.fsh");
-		sh->setParameter("color", sf::Color::Red);
-		states.shader = sh.get();
-	}
-
 	states.transform.translate(-sf::Vector2f(0.f, height));
 	IBaseEntity::draw(rt, states);
+
+//    // draw the base bounding box
+//    auto aabb = getAABB();
+//    sf::RectangleShape r(sf::Vector2f(aabb.width, aabb.height));
+//    r.setPosition(aabb.left, aabb.top);
+//    r.setFillColor(sf::Color::Transparent);
+//    r.setOutlineThickness(1.f);
+//    r.setOutlineColor(sf::Color::Red);
+//    rt.draw(r);
+//
+//    // draw the vert bounding boc
+//    auto vaabb = getZAABB();
+//    sf::RectangleShape h(sf::Vector2f(vaabb.width, vaabb.height));
+//    h.setPosition(vaabb.left, vaabb.top);
+//    h.setFillColor(sf::Color::Transparent);
+//    h.setOutlineThickness(1.f);
+//    h.setOutlineColor(sf::Color::Green);
+//    rt.draw(h);
 }
 
 void Entity::render(sf::RenderTarget &diffuse, sf::RenderTarget &glow)
@@ -149,48 +139,6 @@ sf::IntRect Entity::getZAABB() const
 	return{ static_cast<sf::Vector2i>(IBaseEntity::getPosition() - sf::Vector2f(0.f, height)
 		- sf::Vector2f(base_size.x / 2.f, 0.f)),
 		static_cast<sf::Vector2i>(base_size) };
-}
-
-bool Entity::hurt(int d)
-{
-	if (hasFlags(EntityFlags::INVUNERABLE) || hurtFlash > 0.f)
-		return false;
-
-	if (tmd->isAnimated() && tmd->hasAnimation("hurt"))
-	{
-		anim.play("hurt", [&]()
-		{
-			anim.play("idle");
-		});
-	}
-	else
-	{
-		hurtFlash = 0.14f;
-	}
-
-	setHealth(getHealth() - d);
-	onHurt(d);
-    return true;
-}
-
-void Entity::setHealth(int h)
-{
-	health = h;
-}
-
-int Entity::getHealth() const
-{
-	return health;
-}
-
-void Entity::setMaxHealth(int h)
-{
-	maxHealth = h;
-}
-
-int Entity::getMaxHealth() const
-{
-	return maxHealth;
 }
 
 // static

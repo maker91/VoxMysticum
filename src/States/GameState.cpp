@@ -11,13 +11,15 @@
 #include "RNG.hpp"
 
 #include "EntityFlags.hpp"
-
 #include "Entities/Magic.hpp"
 #include "Entities/Effect.hpp"
 #include "Entities/Barrel.hpp"
 #include "Entities/Bat.hpp"
+#include "Entities/Pickups/HealthPickup.hpp"
+
 #include "States/PauseState.hpp"
 #include "States/GameOverState.hpp"
+
 
 GameState::GameState()
 {
@@ -33,7 +35,8 @@ GameState::GameState()
 	registerEntity<Effect, sf::Vector2f, TMD &, std::string, bool>("effect");
 	registerEntity<Light, sf::Vector3f, sf::Color, float, float>("light");
 	registerEntity<Light, IBaseEntity *, float, sf::Color, float, float>("light");
-	
+    registerEntity<HealthPickup, sf::Vector2f>("health");
+
 	// key bindings (move to config)
     KeyBindings::bind("menu", sf::Keyboard::Escape);
 	KeyBindings::bind("player", "move_up", sf::Keyboard::W);
@@ -72,7 +75,7 @@ void GameState::tick(float dt)
 			for (auto nitr = itr; nitr != entities.end(); ++nitr)
 			{
 				auto b = *nitr;
-				if (a != b && b->hasFlags(EntityFlags::COLLIDE))
+				if (a != b && b->hasFlags(EntityFlags::COLLIDE | EntityFlags::TRIGGER))
 					Entity::checkCollision(*a, *b);
 			}
 		}
@@ -162,7 +165,9 @@ void GameState::handleEvent(const sf::Event &ev)
 				RNG::managed.generate(100.f, 700.f), RNG::managed.generate(100.f, 500.f))
 			);
 		else if (ev.key.code == KeyBindings::getBind("player", "bomb"))
-			player->hurt(1);
+            spawnEntity("health", sf::Vector2f(
+                    RNG::managed.generate(100.f, 700.f), RNG::managed.generate(100.f, 500.f))
+            );
         else if (ev.key.code == KeyBindings::getBind("menu"))
             StateManager::pushState<PauseState>(true);
 		break;

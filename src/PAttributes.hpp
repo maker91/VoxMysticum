@@ -4,7 +4,7 @@
 struct PAttributes
 {
     // magic attributes
-    float shootDelay = 0.16f;
+    float shootDelay = 0.32f;
     float projectileSpeed = 500.f;
     int damage = 25;
 

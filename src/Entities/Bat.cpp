@@ -6,7 +6,7 @@
 #include "RNG.hpp"
 
 Bat::Bat(GameState &gm, const sf::Vector2f &pos)
-: Entity(gm, sf::Vector3f(pos.x, pos.y, 42.f), sf::Vector3f(48.f, 24.f, 32.f),
+: Hurtable(gm, sf::Vector3f(pos.x, pos.y, 42.f), sf::Vector3f(48.f, 24.f, 32.f),
 *ResourceManager::get<TMD>("bat.tmd").get(), 1), nextflap(1.0f)
 {
 	setFlags(EntityFlags::COLLIDE | EntityFlags::GLOW | EntityFlags::HURTFUL);
@@ -44,5 +44,5 @@ void Bat::tick(float dt)
 	float mag = RNG::unmanaged.generate(0.f, 100.f*dt);
 
 	move(mag*p / len);
-	Entity::tick(dt);
+	Hurtable::tick(dt);
 }

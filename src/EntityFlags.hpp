@@ -14,8 +14,11 @@ namespace EntityFlags
 		ABOVE		= 16,
 		// collision
 		COLLIDE		= 32,
+        TRIGGER     = 64,
 		// damage
-		INVUNERABLE	= 64,
-		HURTFUL 	= 128,
+		INVUNERABLE	= 128,
+		HURTFUL 	= 256,
+		// interactions
+		PICKUP	    = 512
 	};
 }

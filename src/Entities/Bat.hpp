@@ -1,7 +1,7 @@
-#include "Entity.hpp"
+#include "Hurtable.hpp"
 #include "SoundEngine.hpp"
 
-class Bat : public Entity
+class Bat : public Hurtable
 {
 public:
 	Bat(GameState &, const sf::Vector2f &pos);

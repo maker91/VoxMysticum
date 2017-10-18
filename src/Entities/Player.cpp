@@ -6,12 +6,14 @@
 #include "KeyBindings.hpp"
 #include "Config.hpp"
 #include "EntityFlags.hpp"
+#include "PickupEntity.hpp"
+#include "SoundEngine.hpp"
 
 
 Player::Player(GameState &gm, const sf::Vector2f &pos, float acceleration, 
 	float friction)
 : acceleration(acceleration), friction(friction), pAttrs(),
-  Entity(gm, sf::Vector3f(pos.x, pos.y, 0.f), sf::Vector3f(48.f, 16.f, 54.f),
+  Hurtable(gm, sf::Vector3f(pos.x, pos.y, 0.f), sf::Vector3f(48.f, 16.f, 54.f),
  *ResourceManager::get<TMD>(Config::config.get("character-sprite", "wizard_arcane.tmd").asString()), 2, 6)
 {
 	setFlags(EntityFlags::GLOW | EntityFlags::COLLIDE);
@@ -21,7 +23,7 @@ Player::Player(GameState &gm, const sf::Vector2f &pos, float acceleration,
 
 void Player::tick(float dt)
 {
-	Entity::tick(dt);
+	Hurtable::tick(dt);
 
 	// movement
 	sf::Vector2f acc;
@@ -114,14 +116,21 @@ void Player::onCollide(Entity &other)
 	if (std::abs(zy) < std::abs(y))
 		y = zy;
 
-	if (std::abs(x) > std::abs(y))
-		move(0.f, static_cast<float>(y));
-	else
-		move(static_cast<float>(x), 0.f);
+    if (!other.hasFlags(EntityFlags::TRIGGER)) {
+        if (std::abs(x) > std::abs(y))
+            move(0.f, static_cast<float>(y));
+        else
+            move(static_cast<float>(x), 0.f);
+    }
 
     if (other.hasFlags(EntityFlags::HURTFUL)) {
         hurt(1);
         velocity += 10.f*(getPosition() - other.getPosition());
+    }
+
+	if (other.hasFlags(EntityFlags::PICKUP)) {
+        if (dynamic_cast<PickupEntity &>(other).applyEffect(*this, pAttrs))
+            other.remove();
     }
 }
 
@@ -134,4 +143,12 @@ void Player::shoot(const sf::Vector2f &vel, const sf::Vector2f &dir)
                          pAttrs.damage, 100.f);
 		nextShoot = pAttrs.shootDelay;
 	}
+}
+
+bool Player::heal(int h) {
+    bool healed = Hurtable::heal(h);
+    if (healed)
+        SoundEngine::playSound("gulp.wav", 60.f);
+
+    return healed;
 }
