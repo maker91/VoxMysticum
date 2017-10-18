@@ -7,11 +7,6 @@
 #include "PauseState.hpp"
 
 
-PauseState::PauseState()
-{
-    KeyBindings::bind("menu", sf::Keyboard::Escape);
-}
-
 void PauseState::onEnter() {
     Logging::Log->debug("Pausing");
 }

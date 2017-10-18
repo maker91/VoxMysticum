@@ -22,6 +22,7 @@ set(SOURCE_FILES
         src/Resources/TMD.cpp
         src/States/GameState.cpp
         src/States/PauseState.cpp
+        src/States/GameOverState.cpp
         src/AnimPlayer.cpp
         src/Config.cpp
         src/IDFactory.cpp

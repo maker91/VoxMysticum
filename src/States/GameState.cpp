@@ -16,6 +16,8 @@
 #include "Entities/Effect.hpp"
 #include "Entities/Barrel.hpp"
 #include "Entities/Bat.hpp"
+#include "States/PauseState.hpp"
+#include "States/GameOverState.hpp"
 
 GameState::GameState()
 {
@@ -33,6 +35,7 @@ GameState::GameState()
 	registerEntity<Light, IBaseEntity *, float, sf::Color, float, float>("light");
 	
 	// key bindings (move to config)
+    KeyBindings::bind("menu", sf::Keyboard::Escape);
 	KeyBindings::bind("player", "move_up", sf::Keyboard::W);
 	KeyBindings::bind("player", "move_right", sf::Keyboard::D);
 	KeyBindings::bind("player", "move_down", sf::Keyboard::S);
@@ -84,6 +87,12 @@ void GameState::tick(float dt)
 		else
 			++itr;
 	}
+
+    // check for player life
+    if (player->getHealth() <= 0)
+    {
+        StateManager::pushState<GameOverState>(true);
+    }
 }
 
 void GameState::draw(sf::RenderTarget &rt)
@@ -154,8 +163,8 @@ void GameState::handleEvent(const sf::Event &ev)
 			);
 		else if (ev.key.code == KeyBindings::getBind("player", "bomb"))
 			player->hurt(1);
-	        else if (ev.key.code == KeyBindings::getBind("menu"))
-        		StateManager::pushState("pause");
+        else if (ev.key.code == KeyBindings::getBind("menu"))
+            StateManager::pushState<PauseState>(true);
 		break;
 
 	default:

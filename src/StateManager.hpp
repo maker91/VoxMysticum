@@ -18,26 +18,27 @@ struct StateInfo
 class StateManager
 {
 public:
-	static void addState(const std::string &, bool, std::shared_ptr<IBaseState>);
-	static void removeState(const std::string &);
-	static bool pushState(const std::string &);
 	static StateInfo popState();
 	static StateInfo getCurrentState();
-	static StateInfo getState(const std::string &);
 
 	static void tick(float dt);
 	static void draw(sf::RenderTarget &);
 	static void handleEvent(const sf::Event &);
 
 	template <typename T, typename... Args>
-	static std::shared_ptr<T> addState(const std::string &name, bool overlay, Args... args)
+	static StateInfo pushState(bool overlay, Args... args)
 	{
-		std::shared_ptr<T> state = std::make_shared<T>(args...);
-		addState(name, overlay, state);
-		return state;
+		if (!stateStack.empty())
+			stateStack.back().state->onExit();
+
+        std::shared_ptr<IBaseState> state = std::make_shared<T>(args...);
+        state->onEnter();
+        StateInfo info = {state, overlay};
+        stateStack.push_back(info);
+
+		return info;
 	}
 
 private:
-	static std::map<std::string, StateInfo> stateMap;
 	static std::deque<StateInfo> stateStack;
 };

@@ -1,30 +1,5 @@
 #include "StateManager.hpp"
 
-void StateManager::addState(const std::string &name, bool overlay, std::shared_ptr<IBaseState> state)
-{
-	stateMap[name] = StateInfo{std::move(state), overlay};
-}
-
-void StateManager::removeState(const std::string &name) {
-    stateMap.erase(name);
-}
-
-bool StateManager::pushState(const std::string &name)
-{
-	if (!stateStack.empty())
-		stateStack.back().state->onExit();
-	
-	if (stateMap.count(name))
-	{
-		auto info = stateMap[name];
-		stateStack.push_back(info);
-		info.state->onEnter();
-		return true;
-	}
-
-	return false;
-}
-
 StateInfo StateManager::popState()
 {
 	if (stateStack.empty())
@@ -46,10 +21,6 @@ StateInfo StateManager::getCurrentState()
 	return stateStack.back();
 }
 
-StateInfo StateManager::getState(const std::string &name)
-{
-	return stateMap.at(name);
-}
 
 void StateManager::draw(sf::RenderTarget &window) {
     std::vector<std::shared_ptr<IBaseState>> to_draw{};
@@ -74,5 +45,4 @@ void StateManager::tick(float dt) {
     getCurrentState().state->tick(dt);
 }
 
-std::map<std::string, StateInfo> StateManager::stateMap;
 std::deque<StateInfo> StateManager::stateStack;

@@ -2,7 +2,7 @@
 
 #include "IBaseState.hpp"
 
-class PauseState : public IBaseState
+class GameOverState : public IBaseState
 {
 public:
 	void handleEvent(const sf::Event &);

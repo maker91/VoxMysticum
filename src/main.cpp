@@ -21,9 +21,7 @@ int main(int argc, char **argv)
 										  Config::config.get("screen-height", 600).asUInt()), "Vox Mysticum");
 	window.setVerticalSyncEnabled(true);
 
-	StateManager::addState<GameState>("game", false);
-	StateManager::addState<PauseState>("pause", true);
-	StateManager::pushState("game");
+	StateManager::pushState<GameState>(false);
 
 	sf::Clock deltaClock;
 	while (window.isOpen())
