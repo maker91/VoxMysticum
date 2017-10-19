@@ -98,6 +98,19 @@ void GameState::tick(float dt)
     }
 }
 
+
+void drawHearts(int start, int end, sf::Sprite &spr, sf::RenderTarget &rt)
+{
+    for (int i=start; i<end; i++) {
+        float x = 10.f + (i%6)*34.f;
+        float y = 10.f + 34*(i/6);
+
+        spr.setPosition(sf::Vector2f(x, y));
+        rt.draw(spr);
+    }
+}
+
+
 void GameState::draw(sf::RenderTarget &rt)
 {
 	lightmap.clear(ambient);
@@ -137,18 +150,12 @@ void GameState::draw(sf::RenderTarget &rt)
 	heart.setScale(0.5f, 0.5f);
 	half_heart.setScale(0.5f, 0.5f);
 	empty_heart.setScale(0.5f, 0.5f);
-    for (int i=health/2; i<(maxhealth/2); i++) {
-        empty_heart.setPosition(sf::Vector2f(10.f + i*34.f, 10.f));
-        rt.draw(empty_heart);
-    }
-	for (int i=0; i<(health/2); i++) {
-		heart.setPosition(sf::Vector2f(10.f + i*34.f, 10.f));
-		rt.draw(heart);
-	}
-	if (healthmod != 0) {
-		half_heart.setPosition(sf::Vector2f(10.f + (health/2)*34.f, 10.f));
-		rt.draw(half_heart);
-	}
+
+    drawHearts(health/2, maxhealth/2, empty_heart, rt);
+    drawHearts(0, health/2, heart, rt);
+
+    if (healthmod != 0)
+        drawHearts(health/2, health/2 + 1, half_heart, rt);
 }
 
 void GameState::handleEvent(const sf::Event &ev)

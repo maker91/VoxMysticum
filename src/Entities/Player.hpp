@@ -16,8 +16,6 @@ public:
 	void shoot(const sf::Vector2f &vel, const sf::Vector2f &dir);
 	void onCollide(Entity &other);
 
-	bool heal(int h) override;
-
 private:
 	sf::Vector2f velocity;
 	float acceleration;

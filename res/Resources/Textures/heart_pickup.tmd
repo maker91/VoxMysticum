@@ -1,5 +1,16 @@
 {
 	"diffuse": "heart_pickup.png",
-	"origin": "12 24",
-	"scale": "1.25 1.25"
+    "glow": {
+        "texture": "heart_pickup.png",
+        "shader": "white.fsh"
+    },
+	"origin": "16 29",
+	"scale": "1 1",
+    "animation": [
+        {
+            "name": "idle",
+            "frametime": 0.0,
+            "frames": ["0 0 32 29"]
+        }
+    ]
 }

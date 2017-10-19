@@ -114,8 +114,8 @@ bool TMD::load(const std::string &n)
 	// load the glow texture
 	if (!readTexture(root, "glow", glow, glow_shader))
 	{
-		glow = diffuse;
-		glow_shader = ResourceManager::get<Shader>("white.fsh").get();
+		glow = nullptr;
+		glow_shader = nullptr;
 	}
 
 	// get the default origin
@@ -219,7 +219,7 @@ void TMD::fallback()
 {
 	diffuse = ResourceManager::get<Texture>("error.png").get();
 	diffuse_shader = nullptr;
-	glow = diffuse;
+	glow = nullptr;
 	glow_shader = diffuse_shader;
 	origin = { 32.f, 32.f };
 	scale = { 1.f, 1.f };
@@ -272,14 +272,14 @@ const Animation &TMD::getAnimation(const std::string &n) const
 	return animations.at(n);
 }
 
-const Texture &TMD::getDiffuseTexture() const
+const Texture *TMD::getDiffuseTexture() const
 {
-	return *diffuse;
+	return diffuse;
 }
 
-const Texture &TMD::getGlowTexture() const
+const Texture *TMD::getGlowTexture() const
 {
-	return *glow;
+	return glow;
 }
 
 const Shader *TMD::getDiffuseShader() const

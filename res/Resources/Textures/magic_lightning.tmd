@@ -1,5 +1,9 @@
 {
 	"diffuse": "magic_lightning.png",
+    "glow": {
+        "texture": "magic_lightning.png",
+        "shader": "white.fsh"
+    },
 	"origin": "16 16",
 	"animation": [
 		{

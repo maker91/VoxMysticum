@@ -28,6 +28,8 @@ public:
 	sf::IntRect getAABB() const;
 	sf::IntRect getZAABB() const;
 
+	virtual bool shouldCollide(const Entity& other) const;
+
 protected:
 	virtual void onCollide(Entity &other) {};
 

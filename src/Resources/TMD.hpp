@@ -26,8 +26,8 @@ public:
 	sf::Vector2f getStaticOrigin() const;
 	sf::Vector2f getStaticScale() const;
 	sf::Color getStaticColor() const;
-	const Texture &getDiffuseTexture() const;
-	const Texture &getGlowTexture() const;
+	const Texture *getDiffuseTexture() const;
+	const Texture *getGlowTexture() const;
 	const Shader *getDiffuseShader() const;
 	const Shader *getGlowShader() const;
 

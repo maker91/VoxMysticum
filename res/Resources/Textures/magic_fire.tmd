@@ -1,5 +1,9 @@
 {
 	"diffuse": "magic_fire.png",
+    "glow": {
+        "texture": "magic_fire.png",
+        "shader": "white.fsh"
+    },
 	"origin": "16 16",
 	"animation": [
 		{

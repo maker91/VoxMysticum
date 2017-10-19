@@ -3,6 +3,10 @@
 #include "States/GameState.hpp"
 #include "ResourceManager.hpp"
 
+
+#define DEBUG_DRAW 0
+
+
 Entity::Entity(GameState &game, const sf::Vector3f &pos, const sf::Vector3f &s, TMD &tex,
 	std::uint64_t m)
 	: IBaseEntity(sf::Vector2f(pos.x, pos.y)), anim(tex), game(game), height(pos.z), collision_mask(m),
@@ -46,7 +50,7 @@ void Entity::draw(sf::RenderTarget &rt, sf::RenderStates states) const
 	if (height > 0.f)
 	{
 		std::shared_ptr<TMD> shadowTex = ResourceManager::get<TMD>("shadow.tmd");
-		sf::Sprite shadow(shadowTex->getDiffuseTexture());
+		sf::Sprite shadow(*shadowTex->getDiffuseTexture());
 		shadow.setOrigin(shadowTex->getStaticOrigin());
 		shadow.setPosition(getPosition());
 		shadow.setScale(shadowTex->getStaticScale());
@@ -56,23 +60,25 @@ void Entity::draw(sf::RenderTarget &rt, sf::RenderStates states) const
 	states.transform.translate(-sf::Vector2f(0.f, height));
 	IBaseEntity::draw(rt, states);
 
-//    // draw the base bounding box
-//    auto aabb = getAABB();
-//    sf::RectangleShape r(sf::Vector2f(aabb.width, aabb.height));
-//    r.setPosition(aabb.left, aabb.top);
-//    r.setFillColor(sf::Color::Transparent);
-//    r.setOutlineThickness(1.f);
-//    r.setOutlineColor(sf::Color::Red);
-//    rt.draw(r);
-//
-//    // draw the vert bounding boc
-//    auto vaabb = getZAABB();
-//    sf::RectangleShape h(sf::Vector2f(vaabb.width, vaabb.height));
-//    h.setPosition(vaabb.left, vaabb.top);
-//    h.setFillColor(sf::Color::Transparent);
-//    h.setOutlineThickness(1.f);
-//    h.setOutlineColor(sf::Color::Green);
-//    rt.draw(h);
+#if DEBUG_DRAW
+    // draw the base bounding box
+    auto aabb = getAABB();
+    sf::RectangleShape r(sf::Vector2f(aabb.width, aabb.height));
+    r.setPosition(aabb.left, aabb.top);
+    r.setFillColor(sf::Color::Transparent);
+    r.setOutlineThickness(1.f);
+    r.setOutlineColor(sf::Color::Red);
+    rt.draw(r);
+
+    // draw the vert bounding boc
+    auto vaabb = getZAABB();
+    sf::RectangleShape h(sf::Vector2f(vaabb.width, vaabb.height));
+    h.setPosition(vaabb.left, vaabb.top);
+    h.setFillColor(sf::Color::Transparent);
+    h.setOutlineThickness(1.f);
+    h.setOutlineColor(sf::Color::Green);
+    rt.draw(h);
+#endif
 }
 
 void Entity::render(sf::RenderTarget &diffuse, sf::RenderTarget &glow)
@@ -93,21 +99,22 @@ void Entity::render(sf::RenderTarget &diffuse, sf::RenderTarget &glow)
 	}
 
 	// draw our glow to the light map
-	if (hasFlags(EntityFlags::GLOW))
+    const Texture *glowTex = tmd->getGlowTexture();
+	if (hasFlags(EntityFlags::GLOW) && glowTex != nullptr)
 	{
-		IBaseEntity::setTexture(tmd->getGlowTexture(), false);
+		IBaseEntity::setTexture(*glowTex, false);
 		if (tmd->getGlowShader() != nullptr)
 			glow.draw(*this, tmd->getGlowShader());
 		else
 			glow.draw(*this);
-		IBaseEntity::setTexture(tmd->getDiffuseTexture(), false);
+		IBaseEntity::setTexture(*tmd->getDiffuseTexture(), false);
 	}
 }
 
 void Entity::setTexture(const TMD &tex)
 {
 	tmd = &tex;
-	IBaseEntity::setTexture(tex.getDiffuseTexture());
+	IBaseEntity::setTexture(*tex.getDiffuseTexture());
 	anim.setTexture(tex);
 	if (!tex.isAnimated())
 	{
@@ -147,6 +154,9 @@ void Entity::checkCollision(Entity &a, Entity &b)
 	if (a.collision_mask & b.collision_mask)
 		return;
 
+    if (!a.shouldCollide(b) || !b.shouldCollide(a))
+        return;
+
 	sf::IntRect ab = a.getAABB();
 	sf::IntRect azb = a.getZAABB();
 	sf::IntRect bb = b.getAABB();
@@ -158,3 +168,9 @@ void Entity::checkCollision(Entity &a, Entity &b)
 		b.onCollide(a);
 	}
 }
+
+bool Entity::shouldCollide(const Entity &other) const {
+	return true;
+}
+
+

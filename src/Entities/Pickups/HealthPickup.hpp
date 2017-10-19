@@ -8,5 +8,8 @@ class HealthPickup : public PickupEntity
 public:
     HealthPickup(GameState &game, const sf::Vector2f &pos);
 
-    bool applyEffect(Player &, PAttributes &attributes) const override;
+    bool applyEffect(Player &, PAttributes &attributes) override;
+
+private:
+    std::shared_ptr<IBaseEntity> light;
 };

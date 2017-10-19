@@ -1,5 +1,9 @@
 {
 	"diffuse": "magic_ice.png",
+    "glow": {
+        "texture": "magic_ice.png",
+        "shader": "white.fsh"
+    },
 	"origin": "16 16",
 	"animation": [
 		{

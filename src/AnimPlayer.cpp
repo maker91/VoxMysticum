@@ -55,8 +55,8 @@ void AnimPlayer::play(const std::string &anim, bool loop)
 
 void AnimPlayer::play(const std::string &anim, std::function<void()> clb)
 {
-	callback = clb;
 	play(anim, false);
+	callback = std::move(clb);
 }
 
 void AnimPlayer::stop()

@@ -1,5 +1,9 @@
 {
 	"diffuse": "magic_arcane.png",
+    "glow": {
+        "texture": "magic_arcane.png",
+        "shader": "white.fsh"
+    },
 	"animation": [
 		{
 			"name": "idle",

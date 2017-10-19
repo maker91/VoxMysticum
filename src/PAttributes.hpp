@@ -10,5 +10,5 @@ struct PAttributes
 
     // player attributes
     float maxSpeed = 600.f;
-    int maxHealth = 6;
+    int maxHealth = 20;
 };
