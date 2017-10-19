@@ -15,8 +15,11 @@ set(SOURCE_FILES
         src/Entities/Light.cpp
         src/Entities/Magic.cpp
         src/Entities/Player.cpp
+        src/Entities/Pedestal.cpp
         src/Entities/PickupEntity.cpp
         src/Entities/Pickups/HealthPickup.cpp
+        src/PedestalItems/IBasePedestalItem.cpp
+        src/PedestalItems/Wand.cpp
         src/json/json-forwards.h
         src/json/json.h
         src/Logging/StandardLogger.cpp

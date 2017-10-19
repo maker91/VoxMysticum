@@ -15,7 +15,10 @@
 #include "Entities/Effect.hpp"
 #include "Entities/Barrel.hpp"
 #include "Entities/Bat.hpp"
+#include "Entities/Pedestal.hpp"
 #include "Entities/Pickups/HealthPickup.hpp"
+
+#include "PedestalItems/Wand.hpp"
 
 #include "States/PauseState.hpp"
 #include "States/GameOverState.hpp"
@@ -36,6 +39,7 @@ GameState::GameState()
 	registerEntity<Light, sf::Vector3f, sf::Color, float, float>("light");
 	registerEntity<Light, IBaseEntity *, float, sf::Color, float, float>("light");
     registerEntity<HealthPickup, sf::Vector2f>("health");
+    registerEntity<Pedestal, sf::Vector2f>("pedestal");
 
 	// key bindings (move to config)
     KeyBindings::bind("menu", sf::Keyboard::Escape);
@@ -53,6 +57,11 @@ GameState::GameState()
 
 	// spawn player
 	player = std::static_pointer_cast<Player>(spawnEntity<sf::Vector2f>("localplayer", { 100.f, 100.f }));
+
+	// spawn test pedestal
+	std::shared_ptr<Pedestal> ped = \
+            std::static_pointer_cast<Pedestal>(spawnEntity("pedestal", sf::Vector2f(220.f, 150.f)));
+    ped->setPedestalItem(std::make_shared<Wand>());
 
 	// create the lightmap
 	lightmap.create(Config::config.get("screen-width", 800).asUInt(),
@@ -138,7 +147,6 @@ void GameState::draw(sf::RenderTarget &rt)
 	// draw the lightmap
 	lightmap.display();
 	rt.draw(sf::Sprite(lightmap.getTexture()), sf::BlendMultiply);
-	//rt.draw(sf::Sprite(lightmap.getTexture()));
 
 	// draw the UI on top
 	int maxhealth = player->getMaxHealth();

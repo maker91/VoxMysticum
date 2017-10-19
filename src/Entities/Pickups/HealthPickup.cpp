@@ -9,8 +9,6 @@ HealthPickup::HealthPickup(GameState &game, const sf::Vector2f &pos)
         : PickupEntity(game, pos, sf::Vector3f(30.f, 16.f, 30.f), *ResourceManager::get<TMD>("heart_pickup.tmd"), 32)
 {
     light = game.spawnLight(this, 0.1, sf::Color(205, 105, 105), 0.5f, 15.f);
-    unsetFlags(EntityFlags::TRIGGER);
-    setFlags(EntityFlags::COLLIDE);
 }
 
 
