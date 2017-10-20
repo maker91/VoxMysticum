@@ -10,11 +10,11 @@
 #include "SoundEngine.hpp"
 
 
-Player::Player(GameState &gm, const sf::Vector2f &pos, float acceleration, 
-	float friction)
-: acceleration(acceleration), friction(friction), pAttrs(),
-  Hurtable(gm, sf::Vector3f(pos.x, pos.y, 0.f), sf::Vector3f(48.f, 24.f, 54.f),
- *ResourceManager::get<TMD>(Config::config.get("character-sprite", "wizard_arcane.tmd").asString()), 2, 6)
+Player::Player(GameState &gm, const sf::Vector2f &pos, float acceleration, float friction)
+		: acceleration(acceleration), friction(friction), pAttrs(),
+          Hurtable(gm, sf::Vector3f(pos.x, pos.y, 0.f), sf::Vector3f(48.f, 24.f, 54.f),
+                   ResourceManager::get<TMD>(Config::config.get("character-sprite", "wizard_arcane.tmd").asString()),
+                   2, 6)
 {
 	setFlags(EntityFlags::GLOW | EntityFlags::COLLIDE);
 	game.spawnLight(this, 0.f, sf::Color(105, 105, 70), 0.8f, 200.f);

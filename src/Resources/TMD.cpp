@@ -7,8 +7,8 @@
 #include "Logging.hpp"
 #include "ResourceManager.hpp"
 #include "TMD.hpp"
-#include "Shader.hpp"
 #include "IBaseResource.hpp"
+
 
 /*
 	TMD parsing methods
@@ -52,7 +52,8 @@ bool readString(const Json::Value &root, const std::string &n, std::string &s)
 	return true;
 }
 
-bool readTexture(const Json::Value &root, const std::string &n, Texture *&t, Shader *&s)
+bool readTexture(const Json::Value &root, const std::string &n, std::shared_ptr<const Texture> &t,
+                 std::shared_ptr<Shader> &s)
 {
 	const Json::Value node = root[n];
 	if (node.isNull())
@@ -62,17 +63,17 @@ bool readTexture(const Json::Value &root, const std::string &n, Texture *&t, Sha
 		std::string tex;
 		if (!readString(node, "texture", tex))
 			return false;
-		t = ResourceManager::get<Texture>(tex).get();
+		t = ResourceManager::get<Texture>(tex);
 
 		std::string sh;
 		if (!readString(node, "shader", sh))
 			s = nullptr;
 		else
-			s = ResourceManager::get<Shader>(sh).get();
+			s = ResourceManager::get_noconst<Shader>(sh);
 	}
 	else
 	{
-		t = ResourceManager::get<Texture>(node.asString()).get();
+		t = ResourceManager::get<Texture>(node.asString());
 		s = nullptr;
 	}
 	return true;
@@ -134,18 +135,15 @@ bool TMD::load(const std::string &n)
 	const Json::Value anims = root["animation"];
 	if (!anims.isNull())
 	{
-		if (anims.size() == 0)
+		if (anims.empty())
 		{
 			Logging::Log->error("Animated TMD file: '%s' must contain atleast one animation!", name.c_str());
 			return false;
 		}
 
 		animated = true;
-		for (unsigned int animIndex = 0; animIndex < anims.size(); ++animIndex)
-		{
-			const Json::Value animData = anims[animIndex];
-
-			// load the name
+		for (auto animData : anims) {
+            // load the name
 			std::string animName;
 			if (!readString(animData, "name", animName))
 			{
@@ -180,16 +178,15 @@ bool TMD::load(const std::string &n)
 
 			// frames
 			const Json::Value frameData = animData["frames"];
-			for (unsigned int frameIndex = 0; frameIndex < frameData.size(); ++frameIndex)
-			{
+			for (const auto &frameIndex : frameData) {
 				sf::IntRect frame;
-				std::istringstream frameSs(frameData[frameIndex].asString());
+				std::istringstream frameSs(frameIndex.asString());
 				frameSs >> frame.left >> frame.top >> frame.width >> frame.height;
 				anim.frames.push_back(frame);
 			}
 
-			if (anim.frames.size() == 0)
-				anim.frames.push_back(sf::IntRect(0, 0, 0, 0));
+			if (anim.frames.empty())
+				anim.frames.emplace_back(0, 0, 0, 0);
 
 			animations[animName] = anim;
 		}
@@ -208,7 +205,7 @@ bool TMD::load(const std::string &n)
 		anim.scale = scale;
 		anim.origin = origin;
 		anim.frameTime = 0.f;
-		anim.frames.push_back(sf::IntRect(sf::Vector2i(0, 0), static_cast<sf::Vector2i>(diffuse->getSize())));
+		anim.frames.emplace_back(sf::Vector2i(0, 0), static_cast<sf::Vector2i>(diffuse->getSize()));
 		animations["idle"] = anim;
 	}
 
@@ -217,7 +214,7 @@ bool TMD::load(const std::string &n)
 
 void TMD::fallback()
 {
-	diffuse = ResourceManager::get<Texture>("error.png").get();
+	diffuse = ResourceManager::get<Texture>("error.png");
 	diffuse_shader = nullptr;
 	glow = nullptr;
 	glow_shader = diffuse_shader;
@@ -229,7 +226,7 @@ void TMD::fallback()
 	anim.scale = scale;
 	anim.origin = origin;
 	anim.frameTime = 0.f;
-	anim.frames.push_back(sf::IntRect(sf::Vector2i(0, 0), static_cast<sf::Vector2i>(diffuse->getSize())));
+	anim.frames.emplace_back(sf::Vector2i(0, 0), static_cast<sf::Vector2i>(diffuse->getSize()));
 	animations["idle"] = anim;
 }
 
@@ -272,22 +269,22 @@ const Animation &TMD::getAnimation(const std::string &n) const
 	return animations.at(n);
 }
 
-const Texture *TMD::getDiffuseTexture() const
+std::shared_ptr<const Texture> TMD::getDiffuseTexture() const
 {
 	return diffuse;
 }
 
-const Texture *TMD::getGlowTexture() const
+std::shared_ptr<const Texture> TMD::getGlowTexture() const
 {
 	return glow;
 }
 
-const Shader *TMD::getDiffuseShader() const
+std::shared_ptr<Shader> TMD::getDiffuseShader() const
 {
 	return diffuse_shader;
 }
 
-const Shader *TMD::getGlowShader() const
+std::shared_ptr<Shader> TMD::getGlowShader() const
 {
 	return glow_shader;
 }

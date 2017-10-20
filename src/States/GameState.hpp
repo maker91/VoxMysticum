@@ -28,7 +28,7 @@ public:
 	}
 
 	template <typename... Args>
-	std::shared_ptr<IBaseEntity> spawnEntity(std::string id, Args... args)
+	std::shared_ptr<BaseEntity> spawnEntity(std::string id, Args... args)
 	{
 		std::shared_ptr<Entity> ent = EntityFactory::create<GameState &, Args...>(id, *this, args...);
 		entities.push_back(ent);
@@ -36,12 +36,12 @@ public:
 		return ent;
 	}
 
-	std::shared_ptr<IBaseEntity> spawnEffect(const sf::Vector2f &pos, TMD &tex, const std::string &anim,
-		bool loop = false);
-	std::shared_ptr<IBaseEntity> spawnLight(const sf::Vector3f &pos, const sf::Color &col = sf::Color::White,
-		float intensity = 1.f, float radius=50.f);
-	std::shared_ptr<IBaseEntity> spawnLight(IBaseEntity *parent, float height, const sf::Color &col = sf::Color::White,
-		float intensity = 1.f, float radius=50.f);
+	std::shared_ptr<BaseEntity> spawnEffect(const sf::Vector2f &pos, std::shared_ptr<const TMD> tex,
+											const std::string &anim, bool loop = false);
+	std::shared_ptr<BaseEntity> spawnLight(const sf::Vector3f &pos, const sf::Color &col = sf::Color::White,
+										   float intensity = 1.f, float radius=50.f);
+	std::shared_ptr<BaseEntity> spawnLight(BaseEntity *parent, float height, const sf::Color &col = sf::Color::White,
+										   float intensity = 1.f, float radius=50.f);
 
 	const sf::Color &getAmbientColor() const;
 	std::shared_ptr<Player> getPlayer() const;

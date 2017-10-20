@@ -1,30 +1,27 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
+#include <Resources/TMD.hpp>
+#include <AnimPlayer.hpp>
+#include <TypeFactory.hpp>
+#include "BaseTMDDrawable.hpp"
 
-#include "IBaseEntity.hpp"
-#include "../Resources/TMD.hpp"
-#include "../AnimPlayer.hpp"
 
 class GameState;
 
-class Entity : public IBaseEntity
+class Entity : public BaseTMDDrawable
 {
 public:
 	Entity(GameState &game, const sf::Vector3f &pos, const sf::Vector3f &size,
-		TMD &tex, std::uint64_t mask = 0);
-
-	void setTexture(const TMD &);
+		   std::shared_ptr<const TMD> tex, std::uint64_t mask = 0);
 
 	void draw(sf::RenderTarget &rt, sf::RenderStates states) const override;
-	void tick(float dt) override;
-	virtual void render(sf::RenderTarget &diffuse, sf::RenderTarget &glow);
 
     virtual bool hurt(int d) {return false;};
     virtual bool heal(int h) {};
 
-	float getHeight() const;
-	void setHeight(float);
+	virtual float getHeight() const;
+	virtual void setHeight(float);
 	sf::IntRect getAABB() const;
 	sf::IntRect getZAABB() const;
 
@@ -34,9 +31,7 @@ protected:
 	virtual void onCollide(Entity &other) {};
 
 protected:
-	AnimPlayer anim;
 	GameState &game;
-	const TMD *tmd;
 
 	float height;
 	sf::Vector3f size;

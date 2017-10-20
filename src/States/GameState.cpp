@@ -35,9 +35,9 @@ GameState::GameState()
 	registerEntity<Barrel, sf::Vector2f>("barrel");
 	registerEntity<Bat, sf::Vector2f>("bat");
 	registerEntity<Magic, sf::Vector2f, sf::Vector2f, sf::Vector2f, float, float, int, float>("magic");
-	registerEntity<Effect, sf::Vector2f, TMD &, std::string, bool>("effect");
+	registerEntity<Effect, sf::Vector2f, std::shared_ptr<const TMD>, std::string, bool>("effect");
 	registerEntity<Light, sf::Vector3f, sf::Color, float, float>("light");
-	registerEntity<Light, IBaseEntity *, float, sf::Color, float, float>("light");
+	registerEntity<Light, BaseEntity *, float, sf::Color, float, float>("light");
     registerEntity<HealthPickup, sf::Vector2f>("health");
     registerEntity<Pedestal, sf::Vector2f>("pedestal");
 
@@ -136,13 +136,13 @@ void GameState::draw(sf::RenderTarget &rt)
 	// draw things in order!
 	for (const auto &ent : entities)
 		if (ent->hasFlags(EntityFlags::BELOW))
-			ent->render(rt, lightmap);
+			ent->render(rt, lightmap, ambient);
 	for (const auto &ent : entities)
 		if (!ent->hasFlags(EntityFlags::BELOW) && !ent->hasFlags(EntityFlags::ABOVE))
-			ent->render(rt, lightmap);
+			ent->render(rt, lightmap, ambient);
 	for (const auto &ent : entities)
 		if (ent->hasFlags(EntityFlags::ABOVE))
-			ent->render(rt, lightmap);
+			ent->render(rt, lightmap, ambient);
 
 	// draw the lightmap
 	lightmap.display();
@@ -197,19 +197,22 @@ void GameState::onEnter()
 	Logging::Log->debug("Entering GameState");
 }
 
-std::shared_ptr<IBaseEntity> GameState::spawnEffect(const sf::Vector2f &pos, TMD &t, const std::string &anim, bool loop)
+std::shared_ptr<BaseEntity> GameState::spawnEffect(const sf::Vector2f &pos, std::shared_ptr<const TMD> t,
+												   const std::string &anim, bool loop)
 {
-	return spawnEntity<sf::Vector2f, TMD &, std::string, bool>("effect", pos, t, anim, loop);
+	return spawnEntity<sf::Vector2f, std::shared_ptr<const TMD>, std::string, bool>("effect", pos, t, anim, loop);
 }
 
-std::shared_ptr<IBaseEntity> GameState::spawnLight(const sf::Vector3f &pos, const sf::Color &col, float intensity, float radius)
+std::shared_ptr<BaseEntity> GameState::spawnLight(const sf::Vector3f &pos, const sf::Color &col, float intensity,
+                                                  float radius)
 {
 	return spawnEntity<sf::Vector3f, sf::Color, float, float>("light", pos, col, intensity, radius);
 }
 
-std::shared_ptr<IBaseEntity> GameState::spawnLight(IBaseEntity *parent, float height, const sf::Color &col, float intensity, float radius)
+std::shared_ptr<BaseEntity> GameState::spawnLight(BaseEntity *parent, float height, const sf::Color &col,
+                                                  float intensity, float radius)
 {
-	return spawnEntity<IBaseEntity *, float, sf::Color, float, float>("light", parent, height, col, intensity, radius);
+	return spawnEntity<BaseEntity *, float, sf::Color, float, float>("light", parent, height, col, intensity, radius);
 }
 
 const sf::Color &GameState::getAmbientColor() const

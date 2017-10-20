@@ -11,5 +11,5 @@ public:
     bool applyEffect(Player &, PAttributes &attributes) override;
 
 private:
-    std::shared_ptr<IBaseEntity> light;
+    std::shared_ptr<BaseEntity> light;
 };

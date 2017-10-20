@@ -8,10 +8,10 @@ class Hurtable : public Entity
 {
 public:
     Hurtable(GameState &game, const sf::Vector3f &pos, const sf::Vector3f &size,
-        TMD &tex, std::uint64_t mask=0, int health=100);
+             std::shared_ptr<const TMD> tex, std::uint64_t mask=0, int health=100);
 
-    virtual void tick(float dt);
-    virtual void draw(sf::RenderTarget &rt, sf::RenderStates states) const;
+    void tick(float dt) override;
+    void draw(sf::RenderTarget &rt, sf::RenderStates states) const override;
 
     bool hurt(int d) override;
     bool heal(int h) override;

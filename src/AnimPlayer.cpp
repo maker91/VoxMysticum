@@ -1,16 +1,16 @@
 #include "AnimPlayer.hpp"
 
-AnimPlayer::AnimPlayer(const TMD &tex)
-: tex(&tex), curTime(0.f), curFrame(0u), running(false), looping(false),
-  curAnimName("idle"), curAnim(&tex.getAnimation("idle"))
+AnimPlayer::AnimPlayer(std::shared_ptr<const TMD> tex)
+: tex(tex), curTime(0.f), curFrame(0u), running(false), looping(false),
+  curAnimName("idle"), curAnim(&tex->getAnimation("idle"))
 {
 
 }
 
-void AnimPlayer::setTexture(const TMD &t)
+void AnimPlayer::setTexture(std::shared_ptr<const TMD> t)
 {
 	stop();
-	tex = &t;
+	tex = std::move(t);
 }
 
 void AnimPlayer::tick(float dt)

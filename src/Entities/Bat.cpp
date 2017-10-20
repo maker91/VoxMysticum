@@ -1,20 +1,15 @@
 #include "Bat.hpp"
 #include "ResourceManager.hpp"
-#include "Resources/TMD.hpp"
 #include "EntityFlags.hpp"
 #include "States/GameState.hpp"
 #include "RNG.hpp"
 
+
 Bat::Bat(GameState &gm, const sf::Vector2f &pos)
 : Hurtable(gm, sf::Vector3f(pos.x, pos.y, 42.f), sf::Vector3f(48.f, 24.f, 32.f),
-*ResourceManager::get<TMD>("bat.tmd").get(), 1), nextflap(1.0f)
+		   ResourceManager::get<TMD>("bat.tmd"), 1), nextflap(1.0f)
 {
 	setFlags(EntityFlags::COLLIDE | EntityFlags::GLOW | EntityFlags::HURTFUL);
-}
-
-Bat::~Bat()
-{
-	
 }
 
 void Bat::onCollide(Entity &other)

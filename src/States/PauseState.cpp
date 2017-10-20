@@ -16,7 +16,7 @@ void PauseState::onExit() {
 }
 
 void PauseState::draw(sf::RenderTarget &rt) {
-    std::shared_ptr<Font> font = ResourceManager::get<Font>("verdana.ttf");
+    std::shared_ptr<const Font> font = ResourceManager::get<Font>("verdana.ttf");
     sf::Text text("PAUSED", *font, 50);
     text.setPosition(300.f, 200.f);
     rt.draw(text);

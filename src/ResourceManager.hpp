@@ -11,7 +11,7 @@ class ResourceManager
 {
 public:
 	template <typename T, typename... Args>
-	static std::shared_ptr<T> get(const std::string &name, Args... args)
+	static std::shared_ptr<T> get_noconst(const std::string &name, Args... args)
 	{
 		std::shared_ptr<T> resource;
 		if (resources.count(name))
@@ -31,6 +31,13 @@ public:
 		}
 		return resource;
 	};
+
+	template <typename T, typename... Args>
+    static std::shared_ptr<const T> get(const std::string &name, Args... args)
+    {
+        return std::static_pointer_cast<const T>(
+                ResourceManager::get_noconst<typename std::remove_const<T>::type, Args...>(name, args...));
+    };
 
 private:
 	static std::map<std::string, std::shared_ptr<IBaseResource>> resources;

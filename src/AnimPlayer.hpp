@@ -3,12 +3,13 @@
 #include <functional>
 #include "Resources/TMD.hpp"
 
+
 class AnimPlayer
 {
 public:
-	AnimPlayer(const TMD &);
+	AnimPlayer(std::shared_ptr<const TMD>);
 
-	void setTexture(const TMD &);
+	void setTexture(std::shared_ptr<const TMD>);
 
 	void tick(float dt);
 	void play(const std::string &anim, bool loop = false);
@@ -22,7 +23,7 @@ public:
 	void getCurrentFrame(sf::Vector2f &origin, sf::Vector2f &scale, sf::Color &col, sf::IntRect &rect) const;
 
 private:
-	const TMD *tex;
+	std::shared_ptr<const TMD> tex;
 	const Animation *curAnim;
 	std::string curAnimName;
 	float curTime;

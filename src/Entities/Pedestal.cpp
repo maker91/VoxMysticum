@@ -5,7 +5,7 @@
 
 Pedestal::Pedestal(GameState &game, const sf::Vector2f &pos)
         : Entity(game, sf::Vector3f(pos.x, pos.y, 0.f), sf::Vector3f(60.f, 20.f, 30.f),
-                 *ResourceManager::get<TMD>("pedestal.tmd"), 64)
+                 ResourceManager::get<TMD>("pedestal.tmd"), 64)
 {
     setFlags(EntityFlags::COLLIDE);
 }

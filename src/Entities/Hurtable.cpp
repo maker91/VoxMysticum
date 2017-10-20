@@ -3,8 +3,8 @@
 #include "ResourceManager.hpp"
 
 
-Hurtable::Hurtable(GameState &game, const sf::Vector3f &pos, const sf::Vector3f &size, TMD &tex, uint64_t mask,
-                   int health)
+Hurtable::Hurtable(GameState &game, const sf::Vector3f &pos, const sf::Vector3f &size, std::shared_ptr<const TMD> tex,
+                   uint64_t mask, int health)
     : Entity(game, pos, size, tex, mask), health(health), maxHealth(health), hurtFlash(0.f)
 {
 
@@ -20,7 +20,7 @@ void Hurtable::tick(float dt) {
 void Hurtable::draw(sf::RenderTarget &rt, sf::RenderStates states) const {
     if (hurtFlash > 0.f)
     {
-        auto sh = ResourceManager::get<Shader>("color_override.fsh");
+        std::shared_ptr<Shader> sh = ResourceManager::get_noconst<Shader>("color_override.fsh");
         sh->setParameter("color", sf::Color::Red);
         states.shader = sh.get();
     }

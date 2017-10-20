@@ -6,12 +6,14 @@ project(${PROJECT_NAME})
 include_directories(./src)
 
 set(SOURCE_FILES
+        src/BaseEntity.cpp
+        src/BaseDrawable.cpp
+        src/BaseTMDDrawable.cpp
         src/Entities/Barrel.cpp
         src/Entities/Bat.cpp
         src/Entities/Effect.cpp
         src/Entities/Entity.cpp
         src/Entities/Hurtable.cpp
-        src/Entities/IBaseEntity.cpp
         src/Entities/Light.cpp
         src/Entities/Magic.cpp
         src/Entities/Player.cpp
