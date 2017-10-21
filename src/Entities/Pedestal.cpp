@@ -22,7 +22,7 @@ void Pedestal::setPedestalItem(std::shared_ptr<IBasePedestalItem> i) {
     item->setPosition(0.f, -50.f);
 
     if (!light)
-        light = game.spawnLight(this, 0.f, sf::Color(205, 205, 105));
+        light = game.spawnLight(this, 5.f, sf::Color(205, 205, 105), 0.8f, 75.f);
 }
 
 void Pedestal::render(sf::RenderTarget &diffuse, sf::RenderTarget &glow, const sf::Color &ambient) {

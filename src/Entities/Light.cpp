@@ -12,12 +12,14 @@ Light::Light(GameState &gm, const sf::Vector3f &pos, const sf::Color &col, float
 {
 	setColor({ col.r, col.g, col.b, static_cast<sf::Uint8>(255 * intensity) });
 	setFlags(EntityFlags::NODRAW | EntityFlags::GLOW);
+	rescale();
 }
 
 Light::Light(GameState &gm, BaseEntity *parent, float height, const sf::Color &col, float intensity, float radius)
 : Light(gm, { 0.f, 0.f, height }, col, intensity, radius)
 {
 	setParent(parent);
+    rescale();
 }
 
 void Light::setHeight(float h)

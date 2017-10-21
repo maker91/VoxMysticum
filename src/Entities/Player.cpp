@@ -16,7 +16,7 @@ Player::Player(GameState &gm, CharacterDef cDef, const sf::Vector2f &pos, float 
                    ResourceManager::get<TMD>(cDef.spriteTexture), 2, 6)
 {
 	setFlags(EntityFlags::GLOW | EntityFlags::COLLIDE);
-	game.spawnLight(this, 0.f, sf::Color(105, 105, 70), 0.8f, 200.f);
+	game.spawnLight(this, 10.f, sf::Color(105, 105, 70), 1.f, 300.f);
 	setMaxHealth(pAttrs.maxHealth);
 }
 
@@ -140,8 +140,8 @@ void Player::shoot(const sf::Vector2f &vel, const sf::Vector2f &dir)
 	if (nextShoot <= 0.0f)
 	{
         std::shared_ptr<const TMD> tex = ResourceManager::get<TMD>(cDef.magicTexture);
-		game.spawnEntity("magic", tex, getPosition() + 25.f*dir, 0.7f*vel, dir, pAttrs.projectileSpeed, 3.5f,
-                         pAttrs.damage, 100.f);
+		game.spawnEntity("magic", tex, getPosition() + 25.f*dir, 0.7f*vel, dir, cDef.magicColor,
+                         pAttrs.projectileSpeed, 3.5f, pAttrs.damage, 100.f);
 		nextShoot = pAttrs.shootDelay;
 	}
 }

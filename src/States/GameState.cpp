@@ -34,7 +34,8 @@ GameState::GameState(CharacterDef cDef) : BaseState()
 	registerEntity<Player, CharacterDef, sf::Vector2f>("localplayer");
 	registerEntity<Barrel, sf::Vector2f>("barrel");
 	registerEntity<Bat, sf::Vector2f>("bat");
-	registerEntity<Magic, std::shared_ptr<const TMD>, sf::Vector2f, sf::Vector2f, sf::Vector2f, float, float, int, float>("magic");
+	registerEntity<Magic, std::shared_ptr<const TMD>, sf::Vector2f, sf::Vector2f, sf::Vector2f,
+            sf::Color, float, float, int, float>("magic");
 	registerEntity<Effect, sf::Vector2f, std::shared_ptr<const TMD>, std::string, bool>("effect");
 	registerEntity<Light, sf::Vector3f, sf::Color, float, float>("light");
 	registerEntity<Light, BaseEntity *, float, sf::Color, float, float>("light");
@@ -70,7 +71,7 @@ GameState::GameState(CharacterDef cDef) : BaseState()
 	// create the lightmap
 	lightmap.create(Config::config.get("screen-width", 800).asUInt(),
                     Config::config.get("screen-height", 600).asUInt());
-	ambient = sf::Color(70, 70, 70);
+	ambient = sf::Color(30, 30, 30);
 }
 
 void GameState::tick(float dt)

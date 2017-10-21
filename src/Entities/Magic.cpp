@@ -8,16 +8,16 @@
 #include <cmath>
 
 Magic::Magic(GameState &gm, std::shared_ptr<const TMD> tex, const sf::Vector2f &pos, const sf::Vector2f &vel,
-	const sf::Vector2f &dir, float speed, float angle, int dmg, float g)
-		: g(g), direction(dir), hit(false), dmg(dmg),
-          Entity(gm, sf::Vector3f(pos.x, pos.y, 32.f), sf::Vector3f(32.f, 24.f, 28.f), tex, 2)
+			 const sf::Vector2f &dir, const sf::Color &col, float speed, float angle, int dmg, float g)
+        : g(g), direction(dir), hit(false), dmg(dmg),
+          Entity(gm, sf::Vector3f(pos.x, pos.y, 32.f), sf::Vector3f(32.f, 24.f, 28.f), std::move(tex), 2)
 {
 	lob = speed*std::sin(3.1451f*angle / 180.f);
 	velocity = vel + dir*speed*std::cos(3.1451f*angle / 180.f);
 	anim.play("idle", true);
 
 	light = std::static_pointer_cast<Light>(game.spawnLight(static_cast<BaseEntity *>(this),
-		height, sf::Color(105, 0, 0), 0.8f, 100.f));
+		height, col, 0.8f, 100.f));
 	setFlags(EntityFlags::GLOW | EntityFlags::COLLIDE);
 
 	SoundEngine::playSound("arcane2.wav");
