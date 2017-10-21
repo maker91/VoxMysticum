@@ -1,0 +1,9 @@
+{
+	"diffuse": "heart_pickup.png",
+    "glow": {
+        "texture": "heart_pickup.png",
+        "shader": "white.fsh"
+    },
+	"origin": "16 15",
+	"scale": "1 1"
+}

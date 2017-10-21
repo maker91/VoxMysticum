@@ -19,6 +19,8 @@ void GameOverState::onExit() {
 void GameOverState::draw(sf::RenderTarget &rt) {
     std::shared_ptr<const Font> font = ResourceManager::get<Font>("verdana.ttf");
     sf::Text text("YOU DIED", *font, 50);
+    sf::FloatRect textRect = text.getLocalBounds();
+    text.setOrigin(textRect.left + textRect.width/2.0f, textRect.top  + textRect.height/2.0f);
     text.setPosition(screenWidth/2.f, screenHeight/2.f);
     rt.draw(text);
 }

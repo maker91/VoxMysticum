@@ -18,6 +18,7 @@
 #include "Entities/Pedestal.hpp"
 #include "Entities/Pickups/HealthPickup.hpp"
 #include "Entities/PedestalItems/Wand.hpp"
+#include "Entities/PedestalItems/Heart.hpp"
 
 #include "States/PauseState.hpp"
 #include "States/GameOverState.hpp"
@@ -59,9 +60,12 @@ GameState::GameState(CharacterDef cDef) : BaseState()
             "localplayer", std::move(cDef), { 100.f, 100.f }));
 
 	// spawn test pedestal
-	std::shared_ptr<Pedestal> ped = \
+	std::shared_ptr<Pedestal> ped1 = \
             std::static_pointer_cast<Pedestal>(spawnEntity("pedestal", sf::Vector2f(220.f, 150.f)));
-    ped->setPedestalItem(std::make_shared<Wand>());
+    ped1->setPedestalItem(std::make_shared<Wand>());
+    std::shared_ptr<Pedestal> ped2 = \
+            std::static_pointer_cast<Pedestal>(spawnEntity("pedestal", sf::Vector2f(420.f, 800.f)));
+    ped2->setPedestalItem(std::make_shared<Heart>());
 
 	// create the lightmap
 	lightmap.create(Config::config.get("screen-width", 800).asUInt(),

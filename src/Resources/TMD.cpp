@@ -214,12 +214,13 @@ bool TMD::load(const std::string &n)
 
 void TMD::fallback()
 {
-	diffuse = ResourceManager::get<Texture>("error.png");
+	diffuse = ResourceManager::get<const Texture>("error.png");
 	diffuse_shader = nullptr;
-	glow = nullptr;
-	glow_shader = diffuse_shader;
-	origin = { 32.f, 32.f };
-	scale = { 1.f, 1.f };
+	glow = diffuse;
+	glow_shader = ResourceManager::get_noconst<Shader>("white.fsh");
+	origin = { 64.f, 64.f };
+	scale = { 0.5f, 0.5f };
+    color = sf::Color::White;
 	animated = false;
 
 	Animation anim;

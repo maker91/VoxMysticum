@@ -22,6 +22,7 @@ set(SOURCE_FILES
         src/Entities/Pickups/HealthPickup.cpp
         src/Entities/PedestalItems/IBasePedestalItem.cpp
         src/Entities/PedestalItems/Wand.cpp
+        src/Entities/PedestalItems/Heart.cpp
         src/json/json-forwards.h
         src/json/json.h
         src/Logging/StandardLogger.cpp
