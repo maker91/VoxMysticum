@@ -1,17 +1,12 @@
 #pragma once
 
 #include <memory>
-#include "Resources/Texture.hpp"
+#include "BaseTMDDrawable.hpp"
 
 
-class IBasePedestalItem
+class IBasePedestalItem : public BaseTMDDrawable
 {
 public:
-    IBasePedestalItem(const Texture &tex);
-
-    const Texture &getTexture() const;
-
-private:
-    const Texture &tex;
+    explicit IBasePedestalItem(std::shared_ptr<const TMD>);
 
 };

@@ -19,7 +19,6 @@ public:
     const sf::Color &getColor() const;
     void setColor(const sf::Color &c);
 
-protected:
     void draw(sf::RenderTarget &rt, sf::RenderStates states) const override;
 
 protected:

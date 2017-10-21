@@ -16,15 +16,15 @@ std::shared_ptr<IBasePedestalItem> Pedestal::getPedestalItem() const {
 
 void Pedestal::setPedestalItem(std::shared_ptr<IBasePedestalItem> i) {
     item = std::move(i);
+    item->setParent(this);
+    item->setPosition(0.f, -50.f);
 }
 
-void Pedestal::draw(sf::RenderTarget &rt, sf::RenderStates states) const {
-    Entity::draw(rt, states);
+void Pedestal::render(sf::RenderTarget &diffuse, sf::RenderTarget &glow, const sf::Color &ambient) {
+    Entity::render(diffuse, glow, ambient);
 
     // draw the pedestal item
     if (item) {
-        sf::Sprite spr = sf::Sprite(item->getTexture());
-        spr.setPosition(getPosition() + sf::Vector2f(0.f, -30.f));
-        rt.draw(spr);
+        item->render(diffuse, glow, ambient);
     }
 }

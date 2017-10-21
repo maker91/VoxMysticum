@@ -12,7 +12,7 @@ public:
     std::shared_ptr<IBasePedestalItem> getPedestalItem() const;
     void setPedestalItem(std::shared_ptr<IBasePedestalItem>);
 
-    void draw(sf::RenderTarget &rt, sf::RenderStates states) const override;
+    void render(sf::RenderTarget &diffuse, sf::RenderTarget &glow, const sf::Color &ambient) override;
 
 private:
     std::shared_ptr<IBasePedestalItem> item;

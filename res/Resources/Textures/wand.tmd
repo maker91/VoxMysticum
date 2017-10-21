@@ -1,5 +1,9 @@
 {
 	"diffuse": "wand.png",
+    "glow": {
+        "texture": "wand.png",
+        "shader": "white.fsh"
+    },
 	"origin": "16 16",
     "scale": "1 1"
 }
