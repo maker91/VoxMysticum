@@ -1,4 +1,5 @@
 {
 	"diffuse": "wizard_lightning.png",
+    "glow": "wizard_glow.png",
 	"origin": "32 64"
 }

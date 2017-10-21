@@ -20,7 +20,7 @@ void PauseState::draw(sf::RenderTarget &rt) {
     sf::Text text("PAUSED", *font, 50);
     sf::FloatRect textRect = text.getLocalBounds();
     text.setOrigin(textRect.left + textRect.width/2.0f, textRect.top  + textRect.height/2.0f);
-    text.setPosition(400.f, 300.f);
+    text.setPosition(screenWidth/2.f, screenHeight/2.f);
     rt.draw(text);
 }
 

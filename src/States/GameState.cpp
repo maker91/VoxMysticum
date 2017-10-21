@@ -23,7 +23,7 @@
 #include "States/GameOverState.hpp"
 
 
-GameState::GameState(CharacterDef cDef)
+GameState::GameState(CharacterDef cDef) : BaseState()
 {
 	// set the seeds
 	RNG::managed.seed(Config::config.get("seed", 100).asUInt64());
@@ -56,7 +56,7 @@ GameState::GameState(CharacterDef cDef)
 
 	// spawn player
 	player = std::static_pointer_cast<Player>(spawnEntity<CharacterDef, sf::Vector2f>(
-            "localplayer", cDef, { 100.f, 100.f }));
+            "localplayer", std::move(cDef), { 100.f, 100.f }));
 
 	// spawn test pedestal
 	std::shared_ptr<Pedestal> ped = \
@@ -167,15 +167,15 @@ void GameState::handleEvent(const sf::Event &ev)
 	case sf::Event::KeyPressed:
 		if (ev.key.code == KeyBindings::getBind("player", "activate"))
 			spawnEntity("bat", sf::Vector2f(
-				RNG::managed.generate(100.f, 700.f), RNG::managed.generate(100.f, 500.f))
+				RNG::managed.generate(10.f, screenWidth - 10.f), RNG::managed.generate(10.f, screenHeight - 10.f))
 			);
 		else if (ev.key.code == KeyBindings::getBind("player", "reload"))
 			spawnEntity("barrel", sf::Vector2f(
-				RNG::managed.generate(100.f, 700.f), RNG::managed.generate(100.f, 500.f))
+                    RNG::managed.generate(10.f, screenWidth - 10.f), RNG::managed.generate(10.f, screenHeight - 10.f))
 			);
 		else if (ev.key.code == KeyBindings::getBind("player", "bomb"))
             spawnEntity("health", sf::Vector2f(
-                    RNG::managed.generate(100.f, 700.f), RNG::managed.generate(100.f, 500.f))
+                    RNG::managed.generate(10.f, screenWidth - 10.f), RNG::managed.generate(10.f, screenHeight - 10.f))
             );
         else if (ev.key.code == KeyBindings::getBind("menu"))
             StateManager::pushState<PauseState>(true);

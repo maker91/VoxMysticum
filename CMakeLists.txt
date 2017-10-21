@@ -28,6 +28,7 @@ set(SOURCE_FILES
         src/Resources/Shader.cpp
         src/Resources/Texture.cpp
         src/Resources/TMD.cpp
+        src/States/BaseState.cpp
         src/States/GameState.cpp
         src/States/PauseState.cpp
         src/States/GameOverState.cpp
