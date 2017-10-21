@@ -1,5 +1,17 @@
 {
 	"diffuse": "wizard_lightning.png",
-    "glow": "wizard_glow.png",
-	"origin": "32 64"
+	"glow": "wizard_glow.png",
+	"origin": "32 56",
+    "animation": [
+        {
+            "name": "idle",
+            "frametime": 0,
+            "frames": ["64 0 64 64"]
+        },
+        {
+            "name": "walk",
+            "frametime": 0.2,
+            "frames": ["128 0 64 64", "0 0 64 64", "256 0 64 64", "0 0 64 64"]
+        }
+    ]
 }

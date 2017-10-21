@@ -43,12 +43,17 @@ void Player::tick(float dt)
 	}
 	
 	float speed = std::sqrt(velocity.x*velocity.x + velocity.y*velocity.y);
+    if (speed > pAttrs.maxSpeed)
+        velocity = pAttrs.maxSpeed*velocity/speed;
 	if (speed > 0.f)
-	{
 		velocity -= velocity*friction*dt;
-		if (speed > pAttrs.maxSpeed)
-			velocity = pAttrs.maxSpeed*velocity/speed;
-	}
+    if (speed > 50.f) {
+        if (!anim.isPlaying("walk"))
+            anim.play("walk", true);
+    } else {
+        if (!anim.isPlaying("idle"))
+            anim.play("idle");
+    }
 
 	move(velocity*dt);
 
