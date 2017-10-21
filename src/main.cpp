@@ -5,12 +5,12 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Network.hpp>
 
-#include "StateManager.hpp"
-#include "States/PauseState.hpp"
-#include "States/GameState.hpp"
-#include "States/PauseState.hpp"
 #include "SoundEngine.hpp"
 #include "Config.hpp"
+#include "StateManager.hpp"
+#include "States/GameState.hpp"
+#include "States/PauseState.hpp"
+#include "States/CharacterSelectState.hpp"
 
 
 int main(int argc, char **argv)
@@ -21,7 +21,8 @@ int main(int argc, char **argv)
 										  Config::config.get("screen-height", 600).asUInt()), "Vox Mysticum");
 	window.setVerticalSyncEnabled(true);
 
-	StateManager::pushState<GameState>(false);
+//	StateManager::pushState<GameState>(false);
+	StateManager::pushState<CharacterSelectState>(false);
 
 	sf::Clock deltaClock;
 	while (window.isOpen())

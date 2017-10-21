@@ -23,7 +23,7 @@ StateInfo StateManager::getCurrentState()
 
 
 void StateManager::draw(sf::RenderTarget &window) {
-    std::vector<std::shared_ptr<IBaseState>> to_draw{};
+    std::vector<std::shared_ptr<BaseState>> to_draw{};
 
     for (auto iter = stateStack.rbegin(); iter != stateStack.rend(); iter++)
     {

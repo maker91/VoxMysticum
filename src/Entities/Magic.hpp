@@ -9,7 +9,7 @@ class GameState;
 class Magic : public Entity
 {
 public:
-	Magic(GameState &, const sf::Vector2f &pos, const sf::Vector2f &vel, const sf::Vector2f &dir, 
+	Magic(GameState &, std::shared_ptr<const TMD>, const sf::Vector2f &pos, const sf::Vector2f &vel, const sf::Vector2f &dir,
 		float speed = 600.f, float angle = 2.f, int dmg = 25, float g = 120.f);
 	
 	void tick(float dt);

@@ -5,21 +5,33 @@
 #include <SFML/Audio/Music.hpp>
 
 #include "IDFactory.hpp"
-#include "IBaseState.hpp"
+#include "BaseState.hpp"
 
 #include "Entities/Entity.hpp"
 #include "Entities/Light.hpp"
 #include "Entities/Player.hpp"
 
-class GameState : public IBaseState
+class GameState : public BaseState
 {
 public:
-	GameState();
+	explicit GameState(CharacterDef);
 
 	void tick(float dt);
 	void draw(sf::RenderTarget &);
 	void handleEvent(const sf::Event &);
 	void onEnter();
+
+    void playerDeath();
+
+	std::shared_ptr<BaseEntity> spawnEffect(const sf::Vector2f &pos, std::shared_ptr<const TMD> tex,
+											const std::string &anim, bool loop = false);
+	std::shared_ptr<BaseEntity> spawnLight(const sf::Vector3f &pos, const sf::Color &col = sf::Color::White,
+										   float intensity = 1.f, float radius=50.f);
+	std::shared_ptr<BaseEntity> spawnLight(BaseEntity *parent, float height, const sf::Color &col = sf::Color::White,
+										   float intensity = 1.f, float radius=50.f);
+
+	const sf::Color &getAmbientColor() const;
+	std::shared_ptr<Player> getPlayer() const;
 
 	template <typename T, typename... Args>
 	void registerEntity(std::string id)
@@ -35,16 +47,6 @@ public:
 		ent->tick(0.f);
 		return ent;
 	}
-
-	std::shared_ptr<BaseEntity> spawnEffect(const sf::Vector2f &pos, std::shared_ptr<const TMD> tex,
-											const std::string &anim, bool loop = false);
-	std::shared_ptr<BaseEntity> spawnLight(const sf::Vector3f &pos, const sf::Color &col = sf::Color::White,
-										   float intensity = 1.f, float radius=50.f);
-	std::shared_ptr<BaseEntity> spawnLight(BaseEntity *parent, float height, const sf::Color &col = sf::Color::White,
-										   float intensity = 1.f, float radius=50.f);
-
-	const sf::Color &getAmbientColor() const;
-	std::shared_ptr<Player> getPlayer() const;
 
 private:
 	std::list<std::shared_ptr<Entity>> entities;

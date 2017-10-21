@@ -5,7 +5,7 @@
 #include "ResourceManager.hpp"
 #include "Resources/Font.hpp"
 #include "States/GameOverState.hpp"
-#include "States/GameState.hpp"
+#include "States/CharacterSelectState.hpp"
 
 
 void GameOverState::onEnter() {
@@ -31,7 +31,7 @@ void GameOverState::handleEvent(const sf::Event &ev)
         if (ev.key.code == KeyBindings::getBind("menu")) {
             StateManager::popState();
             StateManager::popState();
-            StateManager::pushState<GameState>(false);
+            StateManager::pushState<CharacterSelectState>(false);
         }
         break;
 

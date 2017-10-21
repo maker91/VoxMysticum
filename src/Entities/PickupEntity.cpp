@@ -8,3 +8,7 @@ PickupEntity::PickupEntity(GameState &game, const sf::Vector2f &pos, const sf::V
 {
     setFlags(EntityFlags::PICKUP | EntityFlags::TRIGGER | EntityFlags::GLOW);
 }
+
+void PickupEntity::onPlayerCollide(Player &player) {
+    applyEffect(player);
+}

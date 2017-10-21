@@ -20,8 +20,8 @@ set(SOURCE_FILES
         src/Entities/Pedestal.cpp
         src/Entities/PickupEntity.cpp
         src/Entities/Pickups/HealthPickup.cpp
-        src/PedestalItems/IBasePedestalItem.cpp
-        src/PedestalItems/Wand.cpp
+        src/Entities/PedestalItems/IBasePedestalItem.cpp
+        src/Entities/PedestalItems/Wand.cpp
         src/json/json-forwards.h
         src/json/json.h
         src/Logging/StandardLogger.cpp
@@ -31,6 +31,7 @@ set(SOURCE_FILES
         src/States/GameState.cpp
         src/States/PauseState.cpp
         src/States/GameOverState.cpp
+        src/States/CharacterSelectState.cpp
         src/AnimPlayer.cpp
         src/Config.cpp
         src/IDFactory.cpp

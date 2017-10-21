@@ -2,7 +2,7 @@
 
 #include <SFML/Graphics.hpp>
 
-class IBaseState
+class BaseState
 {
 public:
 	virtual void tick(float dt) {};

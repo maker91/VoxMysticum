@@ -17,24 +17,23 @@
 #include "Entities/Bat.hpp"
 #include "Entities/Pedestal.hpp"
 #include "Entities/Pickups/HealthPickup.hpp"
-
-#include "PedestalItems/Wand.hpp"
+#include "Entities/PedestalItems/Wand.hpp"
 
 #include "States/PauseState.hpp"
 #include "States/GameOverState.hpp"
 
 
-GameState::GameState()
+GameState::GameState(CharacterDef cDef)
 {
 	// set the seeds
 	RNG::managed.seed(Config::config.get("seed", 100).asUInt64());
 	RNG::unmanaged.seed(static_cast<unsigned long>(std::time(nullptr)));
 
 	// register entities
-	registerEntity<Player, sf::Vector2f>("localplayer");
+	registerEntity<Player, CharacterDef, sf::Vector2f>("localplayer");
 	registerEntity<Barrel, sf::Vector2f>("barrel");
 	registerEntity<Bat, sf::Vector2f>("bat");
-	registerEntity<Magic, sf::Vector2f, sf::Vector2f, sf::Vector2f, float, float, int, float>("magic");
+	registerEntity<Magic, std::shared_ptr<const TMD>, sf::Vector2f, sf::Vector2f, sf::Vector2f, float, float, int, float>("magic");
 	registerEntity<Effect, sf::Vector2f, std::shared_ptr<const TMD>, std::string, bool>("effect");
 	registerEntity<Light, sf::Vector3f, sf::Color, float, float>("light");
 	registerEntity<Light, BaseEntity *, float, sf::Color, float, float>("light");
@@ -56,7 +55,8 @@ GameState::GameState()
 	KeyBindings::bind("player", "bomb", sf::Keyboard::LShift);
 
 	// spawn player
-	player = std::static_pointer_cast<Player>(spawnEntity<sf::Vector2f>("localplayer", { 100.f, 100.f }));
+	player = std::static_pointer_cast<Player>(spawnEntity<CharacterDef, sf::Vector2f>(
+            "localplayer", cDef, { 100.f, 100.f }));
 
 	// spawn test pedestal
 	std::shared_ptr<Pedestal> ped = \
@@ -99,12 +99,6 @@ void GameState::tick(float dt)
 		else
 			++itr;
 	}
-
-    // check for player life
-    if (player->getHealth() <= 0)
-    {
-        StateManager::pushState<GameOverState>(true);
-    }
 }
 
 
@@ -224,3 +218,9 @@ std::shared_ptr<Player> GameState::getPlayer() const
 {
 	return player;
 }
+
+void GameState::playerDeath() {
+    StateManager::pushState<GameOverState>(true);
+}
+
+

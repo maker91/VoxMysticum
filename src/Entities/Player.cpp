@@ -10,11 +10,10 @@
 #include "SoundEngine.hpp"
 
 
-Player::Player(GameState &gm, const sf::Vector2f &pos, float acceleration, float friction)
-		: acceleration(acceleration), friction(friction), pAttrs(),
+Player::Player(GameState &gm, CharacterDef cDef, const sf::Vector2f &pos, float acceleration, float friction)
+		: acceleration(acceleration), friction(friction), pAttrs(cDef.pAttrs), cDef(cDef), nextShoot(0.f),
           Hurtable(gm, sf::Vector3f(pos.x, pos.y, 0.f), sf::Vector3f(48.f, 24.f, 54.f),
-                   ResourceManager::get<TMD>(Config::config.get("character-sprite", "wizard_arcane.tmd").asString()),
-                   2, 6)
+                   ResourceManager::get<TMD>(cDef.spriteTexture), 2, 6)
 {
 	setFlags(EntityFlags::GLOW | EntityFlags::COLLIDE);
 	game.spawnLight(this, 0.f, sf::Color(105, 105, 70), 0.8f, 200.f);
@@ -128,17 +127,23 @@ void Player::onCollide(Entity &other)
         velocity += 10.f*(getPosition() - other.getPosition());
     }
 
-	if (other.hasFlags(EntityFlags::PICKUP))
-        dynamic_cast<PickupEntity &>(other).applyEffect(*this, pAttrs);
+	other.onPlayerCollide(*this);
 }
 
 void Player::shoot(const sf::Vector2f &vel, const sf::Vector2f &dir)
 {
 	if (nextShoot <= 0.0f)
 	{
-		//game.spawnEntity("magic", getPosition() + 48.f*dir, 0.7f*vel, dir, 500.f, 38.f, 600.f);
-		game.spawnEntity("magic", getPosition() + 25.f*dir, 0.7f*vel, dir, pAttrs.projectileSpeed, 3.5f,
+        std::shared_ptr<const TMD> tex = ResourceManager::get<TMD>(cDef.magicTexture);
+		game.spawnEntity("magic", tex, getPosition() + 25.f*dir, 0.7f*vel, dir, pAttrs.projectileSpeed, 3.5f,
                          pAttrs.damage, 100.f);
 		nextShoot = pAttrs.shootDelay;
 	}
+}
+
+void Player::onHurt(int d) {
+	Hurtable::onHurt(d);
+	SoundEngine::playSound("hurt.wav");
+    if (getHealth() <= 0)
+        game.playerDeath();
 }

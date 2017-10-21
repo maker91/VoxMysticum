@@ -1,8 +1,8 @@
 #pragma once
 
-#include "IBaseState.hpp"
+#include "BaseState.hpp"
 
-class GameOverState : public IBaseState
+class GameOverState : public BaseState
 {
 public:
 	void handleEvent(const sf::Event &);

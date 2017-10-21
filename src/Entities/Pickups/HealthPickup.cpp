@@ -12,7 +12,7 @@ HealthPickup::HealthPickup(GameState &game, const sf::Vector2f &pos)
 }
 
 
-bool HealthPickup::applyEffect(Player &player, PAttributes &attributes)
+bool HealthPickup::applyEffect(Player &player)
 {
     if (!active || !player.heal(1))
         return false;

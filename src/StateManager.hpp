@@ -5,12 +5,12 @@
 #include <deque>
 #include <memory>
 
-#include "States/IBaseState.hpp"
+#include "States/BaseState.hpp"
 
 
 struct StateInfo
 {
-    std::shared_ptr<IBaseState> state;
+    std::shared_ptr<BaseState> state;
     bool overlay;
 };
 
@@ -31,7 +31,7 @@ public:
 		if (!stateStack.empty())
 			stateStack.back().state->onExit();
 
-        std::shared_ptr<IBaseState> state = std::make_shared<T>(args...);
+        std::shared_ptr<BaseState> state = std::make_shared<T>(args...);
         state->onEnter();
         StateInfo info = {state, overlay};
         stateStack.push_back(info);

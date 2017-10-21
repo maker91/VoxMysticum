@@ -1,13 +1,14 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
-#include <Resources/TMD.hpp>
-#include <AnimPlayer.hpp>
-#include <TypeFactory.hpp>
+#include "Resources/TMD.hpp"
+#include "AnimPlayer.hpp"
+#include "TypeFactory.hpp"
 #include "BaseTMDDrawable.hpp"
 
 
 class GameState;
+class Player;
 
 class Entity : public BaseTMDDrawable
 {
@@ -26,9 +27,8 @@ public:
 	sf::IntRect getZAABB() const;
 
 	virtual bool shouldCollide(const Entity& other) const;
-
-protected:
 	virtual void onCollide(Entity &other) {};
+    virtual void onPlayerCollide(Player &player) {};
 
 protected:
 	GameState &game;

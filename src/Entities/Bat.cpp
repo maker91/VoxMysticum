@@ -7,7 +7,7 @@
 
 Bat::Bat(GameState &gm, const sf::Vector2f &pos)
 : Hurtable(gm, sf::Vector3f(pos.x, pos.y, 42.f), sf::Vector3f(48.f, 24.f, 32.f),
-		   ResourceManager::get<TMD>("bat.tmd"), 1), nextflap(1.0f)
+		   ResourceManager::get<TMD>("bat.tmd"), 1, 60), nextflap(1.0f)
 {
 	setFlags(EntityFlags::COLLIDE | EntityFlags::GLOW | EntityFlags::HURTFUL);
 }
@@ -19,6 +19,7 @@ void Bat::onCollide(Entity &other)
 
 void Bat::onHurt(int d)
 {
+	Hurtable::onHurt(d);
 	SoundEngine::playSound("bat_hit.wav", 100, 0.6f);
 	if (getHealth() <= 0)
 		remove();
