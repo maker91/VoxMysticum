@@ -58,13 +58,7 @@ void Magic::destroy()
 	setFlags(EntityFlags::REMOVE);
 	light->setParent(nullptr);
 	light->setFlags(EntityFlags::REMOVE);
-	game.spawnEffect(getPosition() - sf::Vector2f(0.f, height), 
-		ResourceManager::get<const TMD>("magic_arcane.tmd"), "hit")->setFlags(EntityFlags::GLOW | EntityFlags::ABOVE);
-
-	// create two perpendicular magics
-	//sf::Vector2f perp = sf::Vector2f(direction.y, direction.x);
-	//game.spawnEntity("magic", getPosition(), perp*10.f, perp, 400.f, 3.5f, 100.f);
-	//game.spawnEntity("magic", getPosition(), -perp*10.f, -perp, 400.f, 3.5f, 100.f);
+	game.spawnEffect(getPosition() - sf::Vector2f(0.f, height), tmd, "hit")->setFlags(EntityFlags::GLOW | EntityFlags::ABOVE);
 
 	g = 0.f;
 	lob = 0.f;

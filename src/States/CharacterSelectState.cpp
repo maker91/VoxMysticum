@@ -41,14 +41,32 @@ void CharacterSelectState::onExit() {
 
 
 void CharacterSelectState::draw(sf::RenderTarget &rt) {
-    CharacterDef def = *selectedCharDef;
-
     std::shared_ptr<const Font> font = ResourceManager::get<Font>("verdana.ttf");
-    sf::Text text(def.name, *font, 50);
-    sf::FloatRect textRect = text.getLocalBounds();
-    text.setOrigin(textRect.left + textRect.width/2.0f, textRect.top  + textRect.height/2.0f);
-    text.setPosition(screenWidth/2.f, screenHeight/2.f);
-    rt.draw(text);
+    CharacterDef curDef = *selectedCharDef;
+    CharacterDef prevDef;
+    CharacterDef nextDef;
+
+    if (selectedCharDef == characters.cbegin())
+        prevDef = *(characters.cend()-1);
+    else
+        prevDef = *(selectedCharDef-1);
+
+    if (selectedCharDef == characters.cend() - 1)
+        nextDef = *(characters.cbegin());
+    else
+        nextDef = *(selectedCharDef+1);
+
+    CharacterDef charDefs[3] = {prevDef, curDef, nextDef};
+
+    for (int i=0; i<3; i++) {
+        CharacterDef def = charDefs[i];
+        sf::Text text(def.name, *font, 75);
+        sf::FloatRect textRect = text.getLocalBounds();
+        text.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
+        text.setScale(1.f - 0.5f*std::abs(i-1), 1.f - 0.5f*std::abs(i-1));
+        text.setPosition(screenWidth / 2.f, screenHeight / 2.f - 60.f*(i-1));
+        rt.draw(text);
+    }
 }
 
 
