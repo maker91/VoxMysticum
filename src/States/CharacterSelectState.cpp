@@ -5,6 +5,7 @@
 #include "GameState.hpp"
 #include "StateManager.hpp"
 #include "KeyBindings.hpp"
+#include "SoundEngine.hpp"
 #include "Characters/Blaze.hpp"
 #include "Characters/Dexter.hpp"
 #include "Characters/Brock.hpp"
@@ -80,11 +81,15 @@ void CharacterSelectState::handleEvent(const sf::Event &ev)
                     selectedCharDef = characters.cbegin();
                 else
                     selectedCharDef++;
+
+                SoundEngine::playSound("beep.wav");
             } else if (ev.key.code == KeyBindings::getBind("menu", "down")) {
                 if (selectedCharDef == characters.cbegin())
                     selectedCharDef = characters.cend()-1;
                 else
                     selectedCharDef--;
+
+                SoundEngine::playSound("beep.wav");
             } else if (ev.key.code == KeyBindings::getBind("menu", "select")) {
                 StateManager::popState();
                 StateManager::pushState<GameState>(false, *selectedCharDef);
