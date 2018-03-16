@@ -1,6 +1,7 @@
 #pragma once
 
 #include <list>
+#include <SFML/Graphics.hpp>
 #include <SFML/Network.hpp>
 #include <SFML/Audio/Music.hpp>
 
@@ -49,8 +50,13 @@ public:
 	}
 
 private:
+	void drawScene(sf::RenderTarget &);
+	void drawUI(sf::RenderTarget &);
+
+private:
 	std::list<std::shared_ptr<Entity>> entities;
 	std::shared_ptr<Player> player;
 	sf::RenderTexture lightmap;
 	sf::Color ambient;
+	sf::View view;
 };

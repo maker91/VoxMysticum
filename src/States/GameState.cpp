@@ -59,6 +59,7 @@ GameState::GameState(CharacterDef cDef) : BaseState()
 	// spawn player
 	player = std::static_pointer_cast<Player>(spawnEntity<CharacterDef, sf::Vector2f>(
             "localplayer", std::move(cDef), { 100.f, 100.f }));
+    view.reset(sf::FloatRect(100.f, 100.f, 800.f, 600.f));
 
 	// spawn test pedestal
 	std::shared_ptr<Pedestal> ped1 = \
@@ -69,8 +70,9 @@ GameState::GameState(CharacterDef cDef) : BaseState()
     ped2->setPedestalItem(std::make_shared<Heart>());
 
 	// create the lightmap
-	lightmap.create(Config::config.get("screen-width", 800).asUInt(),
-                    Config::config.get("screen-height", 600).asUInt());
+	// lightmap.create(Config::config.get("screen-width", 800).asUInt(),
+                    // Config::config.get("screen-height", 600).asUInt());
+    lightmap.create(1600, 1200);
 	ambient = sf::Color(30, 30, 30);
 }
 
@@ -104,6 +106,9 @@ void GameState::tick(float dt)
 		else
 			++itr;
 	}
+
+    // move the view to the players new position
+    view.setCenter(player->getAbsolutePosition());
 }
 
 
@@ -118,51 +123,64 @@ void drawHearts(int start, int end, sf::Sprite &spr, sf::RenderTarget &rt)
     }
 }
 
-
-void GameState::draw(sf::RenderTarget &rt)
+void GameState::drawScene(sf::RenderTarget &rt)
 {
-	lightmap.clear(ambient);
+    lightmap.clear(ambient);
 
-	// draw the floor
-	rt.draw(sf::Sprite(*ResourceManager::get<Texture>("floor.png")));
+    // draw the floor
+    rt.draw(sf::Sprite(*ResourceManager::get<Texture>("floor.png")));
 
-	// sort the entities
-	entities.sort([](std::shared_ptr<Entity> &a, std::shared_ptr<Entity> &b) -> bool
-	{
-		return a->getAbsolutePosition().y < b->getAbsolutePosition().y;
-	});
+    // sort the entities
+    entities.sort([](std::shared_ptr<Entity> &a, std::shared_ptr<Entity> &b) -> bool
+    {
+        return a->getAbsolutePosition().y < b->getAbsolutePosition().y;
+    });
 
-	// draw things in order!
-	for (const auto &ent : entities)
-		if (ent->hasFlags(EntityFlags::BELOW))
-			ent->render(rt, lightmap, ambient);
-	for (const auto &ent : entities)
-		if (!ent->hasFlags(EntityFlags::BELOW) && !ent->hasFlags(EntityFlags::ABOVE))
-			ent->render(rt, lightmap, ambient);
-	for (const auto &ent : entities)
-		if (ent->hasFlags(EntityFlags::ABOVE))
-			ent->render(rt, lightmap, ambient);
+    // draw things in order!
+    for (const auto &ent : entities)
+        if (ent->hasFlags(EntityFlags::BELOW))
+            ent->render(rt, lightmap, ambient);
+    for (const auto &ent : entities)
+        if (!ent->hasFlags(EntityFlags::BELOW) && !ent->hasFlags(EntityFlags::ABOVE))
+            ent->render(rt, lightmap, ambient);
+    for (const auto &ent : entities)
+        if (ent->hasFlags(EntityFlags::ABOVE))
+            ent->render(rt, lightmap, ambient);
 
-	// draw the lightmap
-	lightmap.display();
-	rt.draw(sf::Sprite(lightmap.getTexture()), sf::BlendMultiply);
+    // draw the lightmap
+    lightmap.display();
+    rt.draw(sf::Sprite(lightmap.getTexture()), sf::BlendMultiply);
+}
 
-	// draw the UI on top
-	int maxhealth = player->getMaxHealth();
+void GameState::drawUI(sf::RenderTarget &rt)
+{
+    int maxhealth = player->getMaxHealth();
     int health = player->getHealth();
-	int healthmod = health % 2;
-	sf::Sprite heart = sf::Sprite(*ResourceManager::get<Texture>("heart.png"));
-	sf::Sprite half_heart = sf::Sprite(*ResourceManager::get<Texture>("half_heart.png"));
-	sf::Sprite empty_heart = sf::Sprite(*ResourceManager::get<Texture>("empty_heart.png"));
-	heart.setScale(0.5f, 0.5f);
-	half_heart.setScale(0.5f, 0.5f);
-	empty_heart.setScale(0.5f, 0.5f);
+    int healthmod = health % 2;
+    sf::Sprite heart = sf::Sprite(*ResourceManager::get<Texture>("heart.png"));
+    sf::Sprite half_heart = sf::Sprite(*ResourceManager::get<Texture>("half_heart.png"));
+    sf::Sprite empty_heart = sf::Sprite(*ResourceManager::get<Texture>("empty_heart.png"));
+    heart.setScale(0.5f, 0.5f);
+    half_heart.setScale(0.5f, 0.5f);
+    empty_heart.setScale(0.5f, 0.5f);
 
     drawHearts(health/2, maxhealth/2, empty_heart, rt);
     drawHearts(0, health/2, heart, rt);
 
     if (healthmod != 0)
         drawHearts(health/2, health/2 + 1, half_heart, rt);
+}
+
+
+void GameState::draw(sf::RenderTarget &rt)
+{
+    // draw the scene with the view active
+    rt.setView(view);
+    drawScene(rt);
+    rt.setView(rt.getDefaultView());
+
+	// draw the UI on top
+	drawUI(rt);
 }
 
 void GameState::handleEvent(const sf::Event &ev)
